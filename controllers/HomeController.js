@@ -1,24 +1,28 @@
-angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$firebaseObject', 'AuthService', '$firebaseArray', function($scope, $firebaseObject, AuthService, $firebaseArray) {
-var ref = new Firebase("https://worldmessage.firebaseio.com");
-ref.child('users').on('value', function(userSnapshot){
-    $scope.users = userSnapshot.val();
-});
+angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$firebaseObject', 'AuthService', 'MessageService', '$firebaseArray', function($scope, $firebaseObject, AuthService, MessageService, $firebaseArray) {
+    var ref = new Firebase("https://worldmessage.firebaseio.com");
+    // ------------users data-----------------
+    // get users list
+    $scope.AuthObj = AuthService; //contains user's data from AuthService
+    $scope.messageObj = MessageService;//contains functions for messaging
+    ref.child('users').on('value', function(userSnapshot) {
+        $scope.users = userSnapshot.val();
+    });
+    // -------------messages-----------------
+    $scope.addMessage = function(newMessageText){
+        MessageService.addMessage(newMessageText, $scope.AuthObj.user.uid, $scope.selectedUser);//newMessageText, uid, userTwoUid
+    }
+    // ref.child('users').child($scope.displayName).child($scope.selectedUser).on('value', function(userSnapshot) {
+    //     $scope.messages = userSnapshot.val();
+    // });
 
-  $scope.displayName = AuthService.displayName;
-  $scope.AuthObj = AuthService;
+    $scope.displayName = AuthService.displayName; //logged on user's name
 
-  // download the data into a local object
-  $scope.data = $firebaseObject(ref);
+    var myMessages = $firebaseObject(ref.child("users"));
+    myMessages.$bindTo($scope, "data");
 
-  var syncObject = $firebaseObject(ref);
-  syncObject.$bindTo($scope, "data");
 
-  $scope.messages = $firebaseArray(ref);
-
-  $scope.addMessage = function() {
-      $scope.messages.$add({
-          text: $scope.newMessageText
-      });
-  };
+    // var theirMessagesRef = fbutil.ref('users').child(selectedUserId).child('messages').child($rootScope.profile.$id);
+    // $scope.myMessages = $firebaseArray(myMessagesRef);
+    // $scope.theirMessages = $firebaseArray(theirMessagesRef);
 
 }]);
