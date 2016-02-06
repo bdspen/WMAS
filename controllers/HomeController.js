@@ -10,11 +10,12 @@ angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$firebaseObjec
     // -------------messages-----------------
     $scope.addMessage = function(newMessageText){
         MessageService.addMessage(newMessageText, $scope.AuthObj.user.uid, $scope.selectedUser);//newMessageText, uid, userTwoUid
+        $scope.getMessages($scope.AuthObj.user.uid, $scope.selectedUser);
     }
-    // ref.child('users').child($scope.displayName).child($scope.selectedUser).on('value', function(userSnapshot) {
-    //     $scope.messages = userSnapshot.val();
-    // });
-
+    $scope.getMessages = function(){
+        MessageService.getMessages($scope.AuthObj.user.uid, $scope.selectedUser);
+        $scope.messages = MessageService.messages;
+    }
     $scope.displayName = AuthService.displayName; //logged on user's name
 
     var myMessages = $firebaseObject(ref.child("users"));
