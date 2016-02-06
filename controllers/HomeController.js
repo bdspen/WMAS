@@ -1,4 +1,4 @@
-angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$firebaseObject', 'AuthService', 'MessageService', '$firebaseArray', function($scope, $firebaseObject, AuthService, MessageService, $firebaseArray) {
+angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$firebaseObject', 'AuthService', 'MessageService', 'MapService', '$firebaseArray', function($scope, $firebaseObject, AuthService, MessageService, MapService, $firebaseArray) {
     var ref = new Firebase("https://worldmessage.firebaseio.com");
     // ------------users data-----------------
     // get users list

@@ -1,8 +1,10 @@
 var app = angular.module("WM", [
     'ui.router',
     'firebase',
+    'geolocation',
     'AuthService',
     'MessageService',
+    'MapService',
     'HomeCtrl'
 ]);
 
