@@ -3,12 +3,13 @@ var app = angular.module("WM", [
     'firebase',
     'geolocation',
     'AuthService',
+    'UserService',
     'MessageService',
     'MapService',
     'HomeCtrl'
 ]);
 
-app.config(function($stateProvider, $locationProvider){
+app.config(function($stateProvider, $locationProvider) {
     $stateProvider.state('home', {
         url: '',
         templateUrl: 'views/home.html',

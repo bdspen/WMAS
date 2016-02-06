@@ -1,21 +1,16 @@
-angular.module('MapService', []).factory('MapService', ['geolocation', '$rootScope', function(geolocation, $rootScope) {
+angular.module('MapService', []).factory('MapService', ['geolocation', 'UserService', '$rootScope', function(geolocation, UserService, $rootScope) {
     var MapObj = {};
     var locations = [];
+    var users = {};
+    UserService.getUsers().then(function(data){
+        var users = data;
+    })
 
     geolocation.getLocation().then(function(data){
-
         // Set the latitude and longitude equal to the HTML5 coordinates
         coords = {lat:data.coords.latitude, long:data.coords.longitude};
 
-        // Display coordinates in location textboxes rounded to three decimal points
-        $scope.formData.longitude = parseFloat(coords.long).toFixed(3);
-        $scope.formData.latitude = parseFloat(coords.lat).toFixed(3);
-
-        // Display message confirming that the coordinates verified.
-        $scope.formData.htmlverified = "Yep (Thanks for giving us real data!)";
-
-        gservice.refresh($scope.formData.latitude, $scope.formData.longitude);
-
+        MapObj.refresh(coords.lat, coords.long);
     });
 
     // Refresh the Map with new data.
@@ -26,7 +21,7 @@ angular.module('MapService', []).factory('MapService', ['geolocation', '$rootSco
         selectedLat = latitude;
         selectedLong = longitude;
 
-        locations = convertToMapPoints(usersArr); // Convert the results into Google Map Format
+        locations = convertToMapPoints(users); // Convert the results into Google Map Format
         initialize(latitude, longitude); // Then initialize the map.
     };
     // private functionsprivate functionsprivate functionsprivate functions
@@ -57,31 +52,25 @@ angular.module('MapService', []).factory('MapService', ['geolocation', '$rootSco
 
     // Initializes the map
     var initialize = function(latitude, longitude) {
-        // Uses the selected lat, long as starting point
-        var myLatLng = {
+        var myLatLng = {// Uses the selected lat, long as starting point
             lat: latitude,
             lng: longitude
         };
-        // If map has not been created already...
-        if (!map) {
-            // Create a new map
-            var map = new google.maps.Map(document.getElementById('map'), {
+        if (!map) {// If map has not been created already...
+            var map = new google.maps.Map(document.getElementById('map'), { // Create a new map
                 zoom: 4,
                 center: myLatLng
             });
         }
-        // Loop through each location in the array and place a marker
-        locations.forEach(function(n, i) {
+        locations.forEach(function(n, i) { // Loop through each location in the array and place a marker
             var marker = new google.maps.Marker({
                 position: n.latlon,
                 map: map,
                 title: "Big Map",
                 icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
             });
-
             // For each marker created, add a listener that checks for clicks
             google.maps.event.addListener(marker, 'click', function(e) {
-
                 // When clicked, open the selected marker's message
                 currentSelectedMarker = n;
                 n.message.open(map, marker);
@@ -93,18 +82,16 @@ angular.module('MapService', []).factory('MapService', ['geolocation', '$rootSco
         });
         // Set initial location as a bouncing red marker
         var initialLocation = new google.maps.LatLng(latitude, longitude);
-        //marker is a function to create a new marker
-        var marker = new google.maps.Marker({
+        var marker = new google.maps.Marker({ //marker is a function to create a new marker
+
             position: initialLocation,
             animation: google.maps.Animation.BOUNCE,
             map: map,
             icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
         });
         MapObj.lastMarker = marker;
-
         // Function for moving to a selected location
         map.panTo(new google.maps.LatLng(latitude, longitude));
-
     };
     // Refresh the page upon window load. Use the initial latitude and longitude
     google.maps.event.addDomListener(window, 'load',
