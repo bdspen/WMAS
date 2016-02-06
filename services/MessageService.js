@@ -4,7 +4,7 @@ angular.module('MessageService', []).factory('MessageService', ['$firebaseArray'
 
     messageObj.addMessage = function(newMessageText, uid, userTwoUid) {
         var messageRef = ref.child(uid).child('messages').child(userTwoUid);
-        messageRef.set({text: newMessageText });
+        messageRef.push({user: uid, text: newMessageText });
     };
 
     messageObj.getMessages = function(uid, userTwoUid) {

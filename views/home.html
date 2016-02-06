@@ -34,7 +34,7 @@
                             <hr>
                         </div>
                         <ul id="messages" ng-show="messages" class="scroll-list">
-                            <li ng-repeat="message in messages">{{message}}</li>
+                            <li ng-repeat="message in messages"><h4>{{message.user}}</h4>: {{message.text}}</li>
                         </ul>
                     </div>
                 </div>

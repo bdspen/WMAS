@@ -2,6 +2,7 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', funct
     var ref = new Firebase("https://worldmessage.firebaseio.com");
     var AuthObj = {};
     var auth = $firebaseAuth(ref);
+
     AuthObj.github = function() {
         auth.$authWithOAuthPopup("github").then(function(authData) {
             console.log("Logged in as:", authData.uid);

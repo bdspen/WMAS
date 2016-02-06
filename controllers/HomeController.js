@@ -4,7 +4,8 @@ angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$firebaseObjec
     // get users list
     $scope.AuthObj = AuthService; //contains user's data from AuthService
     $scope.messageObj = MessageService;//contains functions for messaging
-    ref.child('users').on('value', function(userSnapshot) {
+    $scope.displayName = AuthService.displayName; //logged on user's name
+    ref.child('users').on('value', function(userSnapshot) {//get all users
         $scope.users = userSnapshot.val();
     });
     // -------------messages-----------------
@@ -16,14 +17,5 @@ angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$firebaseObjec
         MessageService.getMessages($scope.AuthObj.user.uid, $scope.selectedUser);
         $scope.messages = MessageService.messages;
     }
-    $scope.displayName = AuthService.displayName; //logged on user's name
-
-    var myMessages = $firebaseObject(ref.child("users"));
-    myMessages.$bindTo($scope, "data");
-
-
-    // var theirMessagesRef = fbutil.ref('users').child(selectedUserId).child('messages').child($rootScope.profile.$id);
-    // $scope.myMessages = $firebaseArray(myMessagesRef);
-    // $scope.theirMessages = $firebaseArray(theirMessagesRef);
 
 }]);
