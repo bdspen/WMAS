@@ -3,12 +3,14 @@ angular.module('UserService', []).factory('UserService', ['$q', '$firebaseArray'
     var ref = new Firebase("https://worldmessage.firebaseio.com");
 
     userObj.getUsers = function(){
-        var defer = $q.defer();
-        ref.child('users').once('value', function(userSnapshot) {//get all user
-            var users = $q.when(userSnapshot.val());
-            defer.resolve(users);
+        return ref.child('users').once('value', function(userSnapshot) {//get all user
+            if (typeof userSnapshot === 'object') {
+                var users = userSnapshot.val();
+                return users;
+            }else{
+                return $q.reject(userSnapshot.val());
+            }
         });
-        return defer.promise;
     }
     return userObj;
 }]);

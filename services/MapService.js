@@ -2,9 +2,12 @@ angular.module('MapService', []).factory('MapService', ['geolocation', 'UserServ
     var MapObj = {};
     var locations = [];
     var users = {};
-    UserService.getUsers().then(function(data){
-        var users = data;
-    })
+    var coords = {};
+    var userPromise = UserService.getUsers();
+    userPromise.then(function(data){
+        var users = data.val();
+        console.log(data.val());
+    });
 
     geolocation.getLocation().then(function(data){
         // Set the latitude and longitude equal to the HTML5 coordinates
@@ -95,7 +98,7 @@ angular.module('MapService', []).factory('MapService', ['geolocation', 'UserServ
     };
     // Refresh the page upon window load. Use the initial latitude and longitude
     google.maps.event.addDomListener(window, 'load',
-        MapObj.refresh(latitude, longitude));
+        MapObj.refresh(coords.lat, coords.long));
 
     return MapObj;
 }]);
