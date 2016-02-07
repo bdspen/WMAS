@@ -10,17 +10,11 @@
             <div id="map" style="width:645px; height:645px"></div>
         </div>
         <div class="col-md-4">
-
-            <div ng-hide="authData" class="jumbotron">
-                <h2>World Message allows users from around the world to chat instantly!</h2>
-                <h3>log in instantly with <a ng-click="AuthObj.github();">Github</a> or <a ng-click="AuthObj.anon();">Anonymously</a></h3>
-            </div>
-
             <div>
                 <ul>
-                    <li ng-repeat="user in users"><a ng-click="$parent.selectedUser = user.uid">{{user.uid}}</a></li>
+                    <li ng-repeat="user in $root.users"><a ng-click="$parent.selectedUser = user.uid">{{user.uid}}</a></li>
                 </ul>
-                <h1>Chat with {{selectedUser}} </h1>
+                <h1>Chat with {{selectedUser.name}} {{selectedUser.id}} </h1>
                 <div class="panel panel-default">
                     <!-- Panel Title -->
                     <div class="panel-heading">
@@ -30,11 +24,11 @@
                         <div>
                             <textarea placeholder="Write a message here!" class="form-control" rows="2" ng-model="newMessageText"></textarea>
                             <br>
-                            <button class="btn btn-success btn-block" type="submit" ng-click="addMessage(newMessageText);newMessageText = null;">Send</button>
+                            <button class="btn btn-success btn-block" type="submit" ng-click="messageObj.addMessage(newMessageText, $root.user.uid, $root.selectedUser.$id);newMessageText = null;">Send</button>
                             <hr>
                         </div>
                         <ul id="messages" ng-show="messages" class="scroll-list">
-                            <li ng-repeat="message in messages"><h4>{{message.user}}</h4>: {{message.text}}</li>
+                            <li ng-repeat="(key, message) in $root.messages"><h4>{{message.user}}{{value}}</h4>: {{message.text}}</li>
                         </ul>
                     </div>
                 </div>
