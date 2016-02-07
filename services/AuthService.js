@@ -1,7 +1,25 @@
-angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', function($firebaseAuth) {
+angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geolocation', 'UserService', '$rootScope', function($firebaseAuth, geolocation, UserService, $rootScope) {
     var ref = new Firebase("https://worldmessage.firebaseio.com");
     var AuthObj = {};
     var auth = $firebaseAuth(ref);
+
+    // UserService.getUsers().then(function(data){
+    //     $rootScope.users = data.val();
+    //     console.log($rootScope.users);
+    // });
+    $rootScope.users = UserService.getUsers();
+    console.log($rootScope.users);
+
+
+    geolocation.getLocation().then(function(data){
+        AuthObj.coords = {lat:data.coords.latitude, long:data.coords.longitude}; // Set the latitude and longitude equal to the HTML5 coordinates
+    });
+
+    AuthObj.logOut = function(){
+        ref.unauth();
+        console.log("Logged Out")
+    }
+    $rootScope.logOut = AuthObj.logOut;
 
     AuthObj.github = function() {
         auth.$authWithOAuthPopup("github").then(function(authData) {
@@ -28,8 +46,8 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', funct
     }
     AuthObj.saveUser = function(uid, name, authData){
         var userRef = ref.child('users').child(uid);
-        userRef.set({uid: uid, name: name });
-        AuthObj.user = authData;
+        userRef.set({uid: uid, name: name, lat: AuthObj.coords.lat , lng: AuthObj.coords.long });
+        $rootScope.user = authData;
     }
     return AuthObj;
 }]);

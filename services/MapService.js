@@ -1,12 +1,10 @@
-angular.module('MapService', []).factory('MapService', ['geolocation', 'UserService', '$rootScope', function(geolocation, UserService, $rootScope) {
+angular.module('MapService', []).factory('MapService', ['geolocation', 'UserService', '$rootScope', '$firebaseObject', 'MessageService', function(geolocation, UserService, $rootScope, $firebaseObject, MessageService) {
     var MapObj = {};
     var locations = [];
-    var users = {};
     var coords = {};
-    UserService.getUsers().then(function(data){
-        var users = data.val();
-        console.log(data.val());
-    });
+    var selectedLat = 39.50;
+    var selectedLong = -98.35;
+    var ref = new Firebase("https://worldmessage.firebaseio.com");
 
     geolocation.getLocation().then(function(data){
         // Set the latitude and longitude equal to the HTML5 coordinates
@@ -23,15 +21,13 @@ angular.module('MapService', []).factory('MapService', ['geolocation', 'UserServ
         selectedLat = latitude;
         selectedLong = longitude;
 
-        locations = convertToMapPoints(users); // Convert the results into Google Map Format
+        locations = convertToMapPoints($rootScope.users); // Convert the results into Google Map Format
         initialize(latitude, longitude); // Then initialize the map.
     };
-    // private functionsprivate functionsprivate functionsprivate functions
-    // Convert a JSON of users into map points
     var convertToMapPoints = function(users) {
         // Clear the locations holder
         var locations = [];
-        // Loop through all of the JSON entries provided in the response
+        // Loop through all of the user locations provided in the response
         for (var i = 0; i < users.length; i++) {
             var user = users[i];
             // Create popup windows for each record
@@ -77,8 +73,9 @@ angular.module('MapService', []).factory('MapService', ['geolocation', 'UserServ
                 currentSelectedMarker = n;
                 n.message.open(map, marker);
                 $rootScope.$apply(function() {
-                    $rootScope.profile.selectedUser = $firebaseObject(fbutil.ref('users').child(n.id));
-                    MapObj.getMessages();
+                    var selectedUserId = n.id;
+                    $rootScope.selectedUser = $firebaseObject(ref.child('users').child(selectedUserId));
+                    MessageService.getMessages($rootScope.user.uid, selectedUserId);
                 });
             });
         });
@@ -97,7 +94,7 @@ angular.module('MapService', []).factory('MapService', ['geolocation', 'UserServ
     };
     // Refresh the page upon window load. Use the initial latitude and longitude
     google.maps.event.addDomListener(window, 'load',
-        MapObj.refresh(coords.lat, coords.long));
+        MapObj.refresh(selectedLat, selectedLong));
 
     return MapObj;
 }]);

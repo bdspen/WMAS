@@ -1,4 +1,4 @@
-angular.module('MessageService', []).factory('MessageService', ['$firebaseArray', function($firebaseArray) {
+angular.module('MessageService', []).factory('MessageService', ['$firebaseArray', '$rootScope', function($firebaseArray, $rootScope) {
     var ref = new Firebase("https://worldmessage.firebaseio.com");
     var messageObj = {};
 
@@ -10,7 +10,7 @@ angular.module('MessageService', []).factory('MessageService', ['$firebaseArray'
     messageObj.getMessages = function(uid, userTwoUid) {
         var messageRef = ref.child(uid).child('messages').child(userTwoUid);
         messageRef.on('value', function(userSnapshot) {
-            messageObj.messages = userSnapshot.val();
+            $rootScope.messages = userSnapshot.val();
         });
     }
     return messageObj;
