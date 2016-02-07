@@ -1,4 +1,4 @@
-angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geolocation', 'UserService', '$rootScope', function($firebaseAuth, geolocation, UserService, $rootScope) {
+angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geolocation', 'UserService', '$rootScope', '$state', function($firebaseAuth, geolocation, UserService, $rootScope, $state) {
     var ref = new Firebase("https://worldmessage.firebaseio.com");
     var AuthObj = {};
     var auth = $firebaseAuth(ref);
@@ -37,8 +37,8 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
             if (error) {
                 console.log("Login Failed!", error);
             } else {
-                AuthObj.saveUser(authData.auth.uid, 'anon', authData);
                 console.log("Authenticated successfully with payload:", authData);
+                AuthObj.saveUser(authData.auth.uid, 'anon', authData);
             }
         }, {
             remember: "sessionOnly"
@@ -46,8 +46,10 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
     }
     AuthObj.saveUser = function(uid, name, authData){
         var userRef = ref.child('users').child(uid);
-        userRef.set({uid: uid, name: name, lat: AuthObj.coords.lat , lng: AuthObj.coords.long });
+        userRef.set({uid: uid, name: name, lat: AuthObj.coords.lat , lng: AuthObj.coords.long });        
         $rootScope.user = authData;
+        $state.go('home');
     }
+
     return AuthObj;
 }]);
