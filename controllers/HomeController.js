@@ -5,7 +5,10 @@ angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$firebaseObjec
     $scope.AuthObj = AuthService; //contains user's data from AuthService
     $scope.messageObj = MessageService;//contains functions for messaging
     $scope.displayName = AuthService.displayName; //logged on user's name
-    $scope.users = UserService;
+    UserService.getUsers().then(function(data){//get all users
+        $scope.users = data.val();
+        // console.log($scope.users);
+    });    
     // -------------messages-----------------
     $scope.addMessage = function(newMessageText){
         MessageService.addMessage(newMessageText, $scope.AuthObj.user.uid, $scope.selectedUser);//newMessageText, uid, userTwoUid

@@ -3,8 +3,7 @@ angular.module('MapService', []).factory('MapService', ['geolocation', 'UserServ
     var locations = [];
     var users = {};
     var coords = {};
-    var userPromise = UserService.getUsers();
-    userPromise.then(function(data){
+    UserService.getUsers().then(function(data){
         var users = data.val();
         console.log(data.val());
     });
