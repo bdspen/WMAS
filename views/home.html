@@ -11,10 +11,10 @@
         </div>
         <div class="col-md-4">
             <div>
-                <ul>
-                    <li ng-repeat="user in $root.users"><a ng-click="$parent.selectedUser = user.uid">{{user.uid}}</a></li>
+                <ul class="scroll-list">
+                    <li ng-repeat="user in $root.users"><a ng-click="$root.selectedUser = user.uid">{{user.uid}}</a></li>
                 </ul>
-                <h1>Chat with {{selectedUser.name}} {{selectedUser.id}} </h1>
+                <h1>Chat with {{$root.selectedUser}} </h1>
                 <div class="panel panel-default">
                     <!-- Panel Title -->
                     <div class="panel-heading">
@@ -24,7 +24,7 @@
                         <div>
                             <textarea placeholder="Write a message here!" class="form-control" rows="2" ng-model="newMessageText"></textarea>
                             <br>
-                            <button class="btn btn-success btn-block" type="submit" ng-click="messageObj.addMessage(newMessageText, $root.user.uid, $root.selectedUser.$id);newMessageText = null;">Send</button>
+                            <button class="btn btn-success btn-block" type="submit" ng-click="messageObj.addMessage(newMessageText, $root.user.uid, $root.selectedUser);newMessageText = null;">Send</button>
                             <hr>
                         </div>
                         <ul id="messages" ng-show="messages" class="scroll-list">
