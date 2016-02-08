@@ -6,12 +6,10 @@ angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$rootScope', '
         $scope.messageObj = MessageService; //contains functions for messaging
         $scope.displayName = AuthService.displayName; //logged on user's name
 
-        // angular.element(document).ready(function() {
-        //     $timeout( function(){
-        //         $rootScope.disconnectRef = new Firebase('https://worldmessage.firebaseio.com').child($rootScope.user.uid);
-        //         $rootScope.disconnectedRef.onDisconnect().remove(); // removes user when disconnected
-        //     }, 5000)
-        // });
+        var messageRef = ref.child('users').child(uid).child('messages').child(userTwoUid);
+        messageRef.on('value', function(userSnapshot) {
+            $rootScope.messages = userSnapshot.val();
+        });
 
     }
 ]);
