@@ -6,7 +6,6 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
     $rootScope.users = UserService.getUsers();
     console.log($rootScope.users);
 
-
     geolocation.getLocation().then(function(data){
         AuthObj.coords = {lat:data.coords.latitude, long:data.coords.longitude}; // Set the latitude and longitude equal to the HTML5 coordinates
     });
@@ -44,6 +43,7 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
         var userRef = ref.child('users').child(uid);
         userRef.set({uid: uid, name: name, lat: AuthObj.coords.lat , lng: AuthObj.coords.long });
         $rootScope.user = authData;
+        $rootScope.messageRef = $rootScope.messageRef = ref.child('users').child(uid).child('messages');
         $state.go('home');
     }
 
