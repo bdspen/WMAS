@@ -3,10 +3,6 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
     var AuthObj = {};
     var auth = $firebaseAuth(ref);
 
-    // UserService.getUsers().then(function(data){
-    //     $rootScope.users = data.val();
-    //     console.log($rootScope.users);
-    // });
     $rootScope.users = UserService.getUsers();
     console.log($rootScope.users);
 
@@ -46,7 +42,7 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
     }
     AuthObj.saveUser = function(uid, name, authData){
         var userRef = ref.child('users').child(uid);
-        userRef.set({uid: uid, name: name, lat: AuthObj.coords.lat , lng: AuthObj.coords.long });        
+        userRef.set({uid: uid, name: name, lat: AuthObj.coords.lat , lng: AuthObj.coords.long });
         $rootScope.user = authData;
         $state.go('home');
     }
