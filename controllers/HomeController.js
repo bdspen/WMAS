@@ -6,10 +6,5 @@ angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$rootScope', '
         $scope.messageObj = MessageService; //contains functions for messaging
         $scope.displayName = AuthService.displayName; //logged on user's name
 
-        var messageRef = ref.child('users').child(uid).child('messages').child(userTwoUid);
-        messageRef.on('value', function(userSnapshot) {
-            $rootScope.messages = userSnapshot.val();
-        });
-
     }
 ]);
