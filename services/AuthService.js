@@ -43,7 +43,8 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
         var userRef = ref.child('users').child(uid);
         userRef.set({uid: uid, name: name, lat: AuthObj.coords.lat , lng: AuthObj.coords.long });
         $rootScope.user = authData;
-        $rootScope.messageRef = $rootScope.messageRef = ref.child('users').child(uid).child('messages');
+        AuthObj.authData = authData;
+        $rootScope.messageRef = $rootScope.messageRef = ref.child('users').child(uid).child('messages').child('uid');
         $state.go('home');
     }
 

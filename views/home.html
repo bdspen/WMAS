@@ -12,7 +12,7 @@
         <div class="col-md-4">
             <div>
                 <ul class="scroll-list">
-                    <li ng-repeat="user in $root.users"><a ng-click="$root.selectedUser.$id = user.uid;">{{user.uid}}</a></li>
+                    <li ng-repeat="user in $root.users"><a ng-click="$root.selectedUser.$id = user.uid;" MessageService.getMessages($root.user.uid, $root.selectedUser.$id);>{{user.uid}}</a></li>
                 </ul>
                 <h1>Chat with {{$root.selectedUser.$id}} </h1>
                 <div class="panel panel-default">
