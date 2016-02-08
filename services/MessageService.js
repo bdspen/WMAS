@@ -7,10 +7,11 @@ angular.module('MessageService', []).factory('MessageService', ['$firebaseArray'
         messageRef.push({user: uid, text: newMessageText });
     };
 
-    var messageRef = ref.child('users').child(uid).child('messages').child(userTwoUid);
-    messageRef.on('value', function(userSnapshot) {
-        $rootScope.messages = userSnapshot.val();
-    });
-
+    messageObj.getMessages = function(uid, userTwoUid) {
+        var messageRef = ref.child('users').child(uid).child('messages').child(userTwoUid);
+        messageRef.on('value', function(userSnapshot) {
+            $rootScope.messages = userSnapshot.val();
+        });
+    }
     return messageObj;
 }]);
