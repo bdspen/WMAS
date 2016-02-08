@@ -24,7 +24,7 @@
                         <div>
                             <textarea placeholder="Write a message here!" class="form-control" rows="2" ng-model="newMessageText"></textarea>
                             <br>
-                            <button class="btn btn-success btn-block" type="submit" ng-click="messageObj.addMessage(newMessageText, $root.user.uid, $root.selectedUser.$id);newMessageText = null;">Send</button>
+                            <button class="btn btn-success btn-block" type="submit" ng-click="messageObj.addMessage(newMessageText, $root.user.uid, $root.selectedUser);newMessageText = null;">Send</button>
                             <hr>
                         </div>
                         <ul id="messages" ng-show="messages" class="scroll-list">
