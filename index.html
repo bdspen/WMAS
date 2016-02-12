@@ -16,25 +16,22 @@
 
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="app.js"></script>
+    <script src="controllers/HomeController.js"></script>
     <script src="services/AuthService.js"></script>
     <script src="services/UserService.js"></script>
     <script src="services/MessageService.js"></script>
     <script src="services/MapService.js"></script>
-    <script src="controllers/LogInController.js"></script>
-    <script src="controllers/HomeController.js"></script>
 
     <title></title>
 </head>
 
-<body ng-app="WM">
+<body ng-app="WM" ng-cloak>
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a href-sref="#/" class="navbar-brand">WorldMessage</a>
             </div>
             <ul class="nav navbar-right">
-                <a class="navbar-link " href="#/home">home</a>
-                <a class="navbar-link " href="#/">login</a>
                 <a class="navbar-link " href="#/" ng-click="$root.logOut()">Log Out</a>
             </ul>
         </div>

@@ -1,14 +1,13 @@
-angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$rootScope', '$firebaseObject', 'AuthService', 'UserService', 'MessageService', 'MapService', '$firebaseArray', 'auth',
-    function($scope, $rootScope, $firebaseObject, AuthService, UserService, MessageService, MapService, $firebaseArray, auth) {
+angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$rootScope', 'resources', 'MapService', 'fbUrl',
+    function($scope, $rootScope, resources, MapService, fbUrl) {
 
-        var ref = new Firebase("https://worldmessage.firebaseio.com");
-        $scope.AuthObj = auth; //contains user's data from AuthService
-        $scope.messageObj = MessageService; //contains functions for messaging
-        $scope.displayName = AuthService.displayName; //logged on user's name
-
-        $rootScope.messageRef = ref.child('users');
-        $rootScope.messageRef.on('value', function(userSnapshot) {
-            $rootScope.messages = userSnapshot.val();
+        var ref = new Firebase(fbUrl);
+        $scope.auth = resources.AuthService; //contains user's data from AuthService
+        $scope.messageObj = resources.MessageService; //contains functions for messaging
+        $scope.$watch('auth.coords', function() {
+            if($scope.auth.coords){
+                MapService.refresh($scope.auth.coords.lat, $scope.auth.coords.long);        
+            }
         });
     }
 ]);
