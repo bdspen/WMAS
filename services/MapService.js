@@ -1,10 +1,11 @@
-angular.module('MapService', []).factory('MapService', ['geolocation', 'UserService', '$rootScope', '$firebaseObject', 'MessageService', function(geolocation, UserService, $rootScope, $firebaseObject, MessageService) {
+angular.module('MapService', []).factory('MapService', ['geolocation', '$rootScope', '$firebaseObject', '$firebaseArray', 'MessageService', 'UserService', function(geolocation, $rootScope, $firebaseObject, $firebaseArray, MessageService, UserService) {
     var MapObj = {};
     var locations = [];
     var coords = {};
     var selectedLat = 39.50;
     var selectedLong = -98.35;
     var ref = new Firebase("https://worldmessage.firebaseio.com");
+
 
     geolocation.getLocation().then(function(data){
         // Set the latitude and longitude equal to the HTML5 coordinates
@@ -21,35 +22,37 @@ angular.module('MapService', []).factory('MapService', ['geolocation', 'UserServ
         selectedLat = latitude;
         selectedLong = longitude;
 
-        locations = convertToMapPoints($rootScope.users); // Convert the results into Google Map Format
-        initialize(latitude, longitude); // Then initialize the map.
+        locations = MapObj.convertToMapPoints($rootScope.users); // Convert the results into Google Map Format
+        MapObj.initialize(latitude, longitude); // Then initialize the map.
     };
-    var convertToMapPoints = function(users) {
-        // Clear the locations holder
-        var locations = [];
-        // Loop through all of the user locations provided in the response
-        for (var i = 0; i < users.length; i++) {
-            var user = users[i];
-            // Create popup windows for each record
-            var contentString =
-                '<h4>' + user.name + '</h4>';
-            // Converts each of the JSON records into Google Maps Location format (Note [Lat, Lng] format).
-            locations.push({
-                latlon: new google.maps.LatLng(user.lat, user.lng),
-                message: new google.maps.InfoWindow({
-                    content: contentString,
-                    maxWidth: 320 //size of infowindow
-                }),
-                username: user.name,
-                id: user.$id,
-            });
+    MapObj.convertToMapPoints = function(users) {
+        if (users) {
+            // Clear the locations holder
+            var locations = [];
+            // Loop through all of the user locations provided in the response
+            for (var i = 0; i < users.length; i++) {
+                var user = users[i];
+                // Create popup windows for each record
+                var contentString =
+                    '<h4>' + user.name + '</h4>';
+                // Converts each of the JSON records into Google Maps Location format (Note [Lat, Lng] format).
+                locations.push({
+                    latlon: new google.maps.LatLng(user.lat, user.lng),
+                    message: new google.maps.InfoWindow({
+                        content: contentString,
+                        maxWidth: 320 //size of infowindow
+                    }),
+                    username: user.name,
+                    id: user.$id,
+                });
+            }
+            // location is now an array populated with records in Google Maps format
+            return locations;
         }
-        // location is now an array populated with records in Google Maps format
-        return locations;
     };
 
     // Initializes the map
-    var initialize = function(latitude, longitude) {
+    MapObj.initialize = function(latitude, longitude) {
         var myLatLng = {// Uses the selected lat, long as starting point
             lat: latitude,
             lng: longitude
@@ -60,25 +63,27 @@ angular.module('MapService', []).factory('MapService', ['geolocation', 'UserServ
                 center: myLatLng
             });
         }
-        locations.forEach(function(n, i) { // Loop through each location in the array and place a marker
-            var marker = new google.maps.Marker({
-                position: n.latlon,
-                map: map,
-                title: "Big Map",
-                icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-            });
-            // For each marker created, add a listener that checks for clicks
-            google.maps.event.addListener(marker, 'click', function(e) {
-                // When clicked, open the selected marker's message
-                currentSelectedMarker = n;
-                n.message.open(map, marker);
-                $rootScope.$apply(function() {
-                    var selectedUserId = n.id;
-                    $rootScope.selectedUser = $firebaseObject(ref.child('users').child(selectedUserId));
-                    MessageService.getMessages($rootScope.user.uid, selectedUserId);
+        if(locations){
+            locations.forEach(function(n, i) { // Loop through each location in the array and place a marker
+                var marker = new google.maps.Marker({
+                    position: n.latlon,
+                    map: map,
+                    title: "Big Map",
+                    icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                });
+                // For each marker created, add a listener that checks for clicks
+                google.maps.event.addListener(marker, 'click', function(e) {
+                    // When clicked, open the selected marker's message
+                    currentSelectedMarker = n;
+                    n.message.open(map, marker);
+                    $rootScope.$apply(function() {
+                        var selectedUserId = n.id;
+                        $rootScope.selectedUser = $firebaseObject(ref.child('users').child(selectedUserId));
+                        MessageService.getMessages($rootScope.user.uid, selectedUserId);
+                    });
                 });
             });
-        });
+        }
         // Set initial location as a bouncing red marker
         var initialLocation = new google.maps.LatLng(latitude, longitude);
         var marker = new google.maps.Marker({ //marker is a function to create a new marker
