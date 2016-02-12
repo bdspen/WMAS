@@ -14,7 +14,7 @@ app.constant('fbUrl', "https://worldmessage.firebaseio.com");
 
 app.config(function($stateProvider, $locationProvider) {
     $stateProvider.state('home', {
-        url: '/',
+        url: '',
         controller: 'HomeCtrl',
         templateUrl: 'views/home.html',
         resolve: {

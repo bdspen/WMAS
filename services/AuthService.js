@@ -1,7 +1,20 @@
-angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geolocation', 'UserService', '$rootScope', '$state', function($firebaseAuth, geolocation, UserService, $rootScope, $state) {
-    var ref = new Firebase("https://worldmessage.firebaseio.com");
+angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geolocation', 'UserService', '$rootScope', '$state', 'fbUrl', function($firebaseAuth, geolocation, UserService, $rootScope, $state, fbUrl) {
+    var ref = new Firebase(fbUrl);
     var AuthObj = {};
     var auth = $firebaseAuth(ref);
+
+    AuthObj.connect = function(authData){
+        var userRef = ref.child('users').child(authData.uid);
+        var connectedRef = ref.child('.info').child('connected');
+        connectedRef.on('value', function(snap) {
+            if (snap.val() === true) {
+                console.log('were connected');
+                userRef.onDisconnect().remove();
+            } else {
+                console.log('were Disconnected');
+            }
+        });
+    }
 
     AuthObj.logOut = function(){
         ref.unauth();
@@ -15,21 +28,23 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
                 console.log("Login Failed!", error);
             } else {
                 console.log("Authenticated successfully with payload:", authData);
-                AuthObj.saveUser(authData.auth.uid, 'anon', authData);
+                AuthObj.saveUser(authData);
+                AuthObj.connect(authData);
             }
         }, {
             remember: "sessionOnly"
         });
     }
-    AuthObj.saveUser = function(uid, name, authData){
-        var userRef = ref.child('users').child(uid);
+    AuthObj.saveUser = function(authData){
+        var userRef = ref.child('users').child(authData.uid);
+        var uid = authData.uid;
         geolocation.getLocation().then(function(data){
             AuthObj.coords = {lat:data.coords.latitude, long:data.coords.longitude}; // Set the latitude and longitude equal to the HTML5 coordinates
+            userRef.set({uid: uid, lat: AuthObj.coords.lat , lng: AuthObj.coords.long });
         });
-        userRef.set({uid: uid, name: name, lat: AuthObj.coords.lat , lng: AuthObj.coords.long });
         $rootScope.user = authData;
         AuthObj.authData = authData;
-        $rootScope.myMessageRef = ref.child('users').child(uid).child('messages').child('uid');
+        $rootScope.myMessageRef = ref.child('users').child(uid).child('messages').child(uid);
 
     }
 
