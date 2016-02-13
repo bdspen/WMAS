@@ -11,6 +11,12 @@ var app = angular.module("WM", [
 
 app.constant('fbUrl', "https://worldmessage.firebaseio.com");
 
+app.run(function($rootScope) {
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+        console.error("Something went wrong!", error);
+        console.error("$stateChangeError: ", toState, error);
+    });
+});
 
 app.config(function($stateProvider, $locationProvider) {
     $stateProvider.state('home', {

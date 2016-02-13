@@ -1,19 +1,21 @@
-angular.module('MessageService', []).factory('MessageService', ['$firebaseArray', '$rootScope', function($firebaseArray, $rootScope) {
-    var ref = new Firebase("https://worldmessage.firebaseio.com");
-    var messageObj = {};
+angular.module('MessageService', []).factory('MessageService', ['$firebaseArray', '$rootScope',
+    function($firebaseArray, $rootScope) {
+        var ref = new Firebase("https://worldmessage.firebaseio.com");
+        var selectedUser = 'Everyone';
+        var messages = $firebaseArray(ref.child('messages').child(selectedUser));
 
-    messageObj.addMessage = function(newMessageText, uid, userTwoUid) {
-        $rootScope.theirMessageRef = ref.child('users').child(userTwoUid).child('messages').child(uid);
-        $rootScope.myMessageRef.push({user: uid, text: newMessageText });
-        $rootScope.theirMessageRef.push({user: uid, text: newMessageText });
-        messageObj.getMessages(uid, userTwoUid);
-    };
-
-    messageObj.getMessages = function(uid, userTwoUid) {
-        $rootScope.myMessageRef = ref.child('users').child(uid).child('messages').child(userTwoUid);
-        $rootScope.myMessageRef.on('value', function(userSnapshot) {
-            $rootScope.messages = userSnapshot.val();
-        });
+        var Message = {
+            all: messages,
+            create: function(message) {
+                return messages.$add(message);
+            },
+            get: function(messageId) {
+                return $firebase(ref.child('messages').child(messageId)).$asObject();
+            },
+            delete: function(message) {
+                return messages.$remove(message);
+            }
+        };
+        return Message;
     }
-    return messageObj;
-}]);
+]);

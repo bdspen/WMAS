@@ -77,9 +77,8 @@ angular.module('MapService', []).factory('MapService', ['geolocation', '$rootSco
                     currentSelectedMarker = n;
                     n.message.open(map, marker);
                     $rootScope.$apply(function() {
-                        var selectedUserId = n.id;
-                        $rootScope.selectedUser = $firebaseObject(ref.child('users').child(selectedUserId));
-                        MessageService.getMessages($rootScope.user.uid, selectedUserId);
+                        var selectedUser = n.id;
+                        $rootScope.selectedUser = selectedUser;
                     });
                 });
             });

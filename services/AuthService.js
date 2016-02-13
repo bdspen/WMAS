@@ -16,12 +16,6 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
         });
     }
 
-    AuthObj.logOut = function(){
-        ref.unauth();
-        console.log("Logged Out")
-    }
-    $rootScope.logOut = AuthObj.logOut;
-
     AuthObj.anon = function() {
         ref.authAnonymously(function(error, authData) {
             if (error) {
@@ -44,8 +38,6 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
         });
         $rootScope.user = authData;
         AuthObj.authData = authData;
-        $rootScope.myMessageRef = ref.child('users').child(uid).child('messages').child(uid);
-
     }
 
     return AuthObj;
