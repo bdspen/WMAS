@@ -3,6 +3,7 @@ var app = angular.module("WM", [
     'firebase',
     'geolocation',
     'HomeCtrl',
+    'MessageCtrl',
     'AuthService',
     'UserService',
     'MessageService',
@@ -17,20 +18,37 @@ app.run(function($rootScope) {
         console.error("$stateChangeError: ", toState, error);
     });
 });
-
 app.config(function($stateProvider, $locationProvider) {
     $stateProvider.state('home', {
-        url: '',
+        url: '/',
         controller: 'HomeCtrl',
         templateUrl: 'views/home.html',
         resolve: {
-            // A function value resolves to the return value of the function
             resources: function(AuthService, UserService, MessageService, $rootScope) {
                 AuthService.anon();
-                UserService().then(function(data){
+                UserService().then(function(data) {
                     $rootScope.users = data;
                 });
-                var resources = {AuthService: AuthService, MessageService: MessageService}
+                var resources = {
+                    AuthService: AuthService,
+                    MessageService: MessageService
+                }
+                return resources;
+            },
+        }
+    }).state('chat', {
+        url: '/chat/:selectedUid/:uid',
+        controller: 'MessageCtrl',
+        templateUrl: 'views/home.html',
+        resolve: {
+            resources: function(AuthService, MessageService, $rootScope, $stateParams) {
+                var channelRef = $stateParams.selectedUid + '_' + $stateParams.uid;
+                // var messageRef = ref.child('messages').child($stateParams.selectedUser).child($stateParams.uid);
+                var resources = {
+                    channelRef: channelRef,
+                    AuthService: AuthService,
+                    MessageService: MessageService
+                }
                 return resources;
             },
         }

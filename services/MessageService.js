@@ -1,16 +1,14 @@
 angular.module('MessageService', []).factory('MessageService', ['$firebaseArray', '$rootScope',
     function($firebaseArray, $rootScope) {
-        var ref = new Firebase("https://worldmessage.firebaseio.com");
-        var selectedUser = 'Everyone';
-        var messages = $firebaseArray(ref.child('messages').child(selectedUser));
+        var globalRef = new Firebase("https://worldmessage.firebaseio.com");
 
         var Message = {
-            all: messages,
-            create: function(message) {
-                return messages.$add(message);
+            create: function(message, ref) {
+                $rootScope.messages = $firebaseArray(globalRef.child('messages').child(ref));
+                return $rootScope.messages.$add(message);
             },
-            get: function(messageId) {
-                return $firebase(ref.child('messages').child(messageId)).$asObject();
+            get: function(channelRef) {
+                return $firebaseArray(globalRef.child('messages').child(channelRef));
             },
             delete: function(message) {
                 return messages.$remove(message);
