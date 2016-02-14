@@ -1,0 +1,17 @@
+#map {
+   display: block;
+   height: 700px;
+   -webkit-transition:all linear 1s;
+   transition:all linear 1s;
+}
+#map.ng-hide {
+  opacity:0;
+}
+
+.animate-repeat {
+    list-style:none;
+    /*box-sizing:border-box;*/
+    border-bottom: 1px solid white;
+    -webkit-transition: 1s linear all;
+    transition: 1s linear all;
+}

@@ -1,19 +1,27 @@
-angular.module('MessageService', []).factory('MessageService', ['$firebaseArray', '$rootScope', function($firebaseArray, $rootScope) {
-    var ref = new Firebase("https://worldmessage.firebaseio.com");
-    var messageObj = {};
+angular.module('MessageService', []).factory('MessageService', ['$firebaseArray', '$rootScope',
+    function($firebaseArray, $rootScope) {
+        var globalRef = new Firebase("https://worldmessage.firebaseio.com");
 
-    messageObj.addMessage = function(newMessageText, uid, userTwoUid) {
-        $rootScope.theirMessageRef = ref.child('users').child(userTwoUid).child('messages').child(uid);
-        $rootScope.myMessageRef.push({user: uid, text: newMessageText });
-        $rootScope.theirMessageRef.push({user: uid, text: newMessageText });
-        messageObj.getMessages(uid, userTwoUid);
-    };
+        var Message = {
+            create: function(message, uid, selectedUser) {
+                myMessagesRef = $firebaseArray(globalRef.child('users').child(uid).child('messages').child(selectedUser));
+                theirMessagesRef = $firebaseArray(globalRef.child('users').child(selectedUser).child('messages').child(uid));
+                myMessagesRef.$add(message);
+                theirMessagesRef.$add(message);
 
-    messageObj.getMessages = function(uid, userTwoUid) {
-        $rootScope.myMessageRef = ref.child('users').child(uid).child('messages').child(userTwoUid);
-        $rootScope.myMessageRef.on('value', function(userSnapshot) {
-            $rootScope.messages = userSnapshot.val();
-        });
+            },
+            createPing: function(uid, selectedUser) {
+                theirMessagesRef = $firebaseArray(globalRef.child('users').child(selectedUser).child('messages').child(uid));
+                theirMessagesRef.$add(uid);
+            },
+            get: function(uid, selectedUser) {
+                var getRef = globalRef.child('users').child(uid).child('messages').child(selectedUser);
+                return $firebaseArray(getRef).$loaded();
+            },
+            delete: function(message) {
+                return messages.$remove(message);
+            }
+        };
+        return Message;
     }
-    return messageObj;
-}]);
+]);
