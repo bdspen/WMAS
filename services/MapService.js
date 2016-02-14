@@ -80,6 +80,18 @@ angular.module('MapService', []).factory('MapService', ['geolocation', '$rootSco
                         var selectedUser = n.id;
                         $rootScope.selectedUser = selectedUser;
                     });
+                    var line = new google.maps.Polyline({
+                        path: [
+                            new google.maps.LatLng(n.latlon.lat(), n.latlon.lng()),
+                            new google.maps.LatLng(37.4519, -122.1519)
+                        ],
+                        strokeColor: "#1919ff",
+                        geodesic: true,
+                        strokeOpacity: .6,
+                        strokeWeight: 5,
+                        map: map
+                    });
+                    line.setMap(map);
                 });
             });
         }

@@ -32,11 +32,11 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
     AuthObj.saveUser = function(authData){
         var userRef = ref.child('users').child(authData.uid);
         var uid = authData.uid;
+        $rootScope.user = authData;
         geolocation.getLocation().then(function(data){
             AuthObj.coords = {lat:data.coords.latitude, long:data.coords.longitude}; // Set the latitude and longitude equal to the HTML5 coordinates
             userRef.set({uid: uid, lat: AuthObj.coords.lat , lng: AuthObj.coords.long });
         });
-        $rootScope.user = authData;
         AuthObj.authData = authData;
     }
 
