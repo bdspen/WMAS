@@ -21,7 +21,7 @@ app.run(function($state,$rootScope) {
 });
 app.config(function($stateProvider, $locationProvider) {
     $stateProvider.state('home', {
-        url: '/',
+        url: '',
         controller: 'HomeCtrl',
         templateUrl: 'views/home.html',
         resolve: {
@@ -42,13 +42,16 @@ app.config(function($stateProvider, $locationProvider) {
         controller: 'MessageCtrl',
         templateUrl: 'views/home.html',
         resolve: {
-            resources: function(AuthService, MessageService, $rootScope, $stateParams) {
+            resources: function(AuthService, MessageService, $rootScope, $stateParams, $firebaseArray, fbUrl) {
+                var ref = new Firebase(fbUrl);
                 var channelRef = {selectedUser: $stateParams.selectedUid, uid: $stateParams.uid};
                 var message = channelRef.uid + ' Started a Chat!';//I started the chat
                 MessageService.create(message, channelRef.uid , channelRef.selectedUser);
+                var messages = $firebaseArray(ref.child('users').child(channelRef.uid).child('messages').child(channelRef.selectedUser)).$loaded();
                 var resources = {
                     channelRef: channelRef,
                     AuthService: AuthService,
+                    messages: messages,
                     MessageService: MessageService
                 }
                 return resources;
@@ -59,11 +62,14 @@ app.config(function($stateProvider, $locationProvider) {
         controller: 'MessageCtrl',
         templateUrl: 'views/home.html',
         resolve: {
-            resources: function(AuthService, MessageService, $rootScope, $stateParams) {
+            resources: function(AuthService, MessageService, $rootScope, $stateParams, $firebaseArray, fbUrl) {
+                var ref = new Firebase(fbUrl);
                 var channelRef = {selectedUser: $stateParams.selectedUid, uid: $stateParams.uid};
+                var messages = $firebaseArray(ref.child('users').child(channelRef.uid).child('messages').child(channelRef.selectedUser)).$loaded();
                 var resources = {
                     channelRef: channelRef,
                     AuthService: AuthService,
+                    messages: messages,
                     MessageService: MessageService
                 }
                 return resources;
