@@ -13,11 +13,13 @@ angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$state', '$roo
                 //watch users/messages for new child, if there is a new child, go to the chat state with the new child id as selectedUser
                 var uid = $scope.auth.authData.uid
                 ref.child('users').child(uid).child('messages').once('child_added', function(data){
-                    $scope.requester = data.val();
-                    var properties = Object.getOwnPropertyNames($scope.requester);
-                    $scope.requester = $scope.requester[properties[0]];
-                    $state.go('chatrequest', { selectedUid: $scope.requester, uid: uid });
-                })
+                    if($state.is('home')){
+                        $scope.requester = data.val();
+                        var properties = Object.getOwnPropertyNames($scope.requester);
+                        $scope.requester = $scope.requester[properties[0]];
+                        $state.go('chatrequest', { selectedUid: $scope.requester, uid: uid });
+                    }
+                });
             }
         });
     }

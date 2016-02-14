@@ -37,7 +37,8 @@ app.config(function($stateProvider, $locationProvider) {
                 return resources;
             },
         }
-    }).state('chat', {
+    });
+    $stateProvider.state('chat', {
         url: '/chat/:selectedUid/:uid',
         controller: 'MessageCtrl',
         templateUrl: 'views/home.html',
@@ -45,31 +46,39 @@ app.config(function($stateProvider, $locationProvider) {
             resources: function(AuthService, MessageService, $rootScope, $stateParams, $firebaseArray, fbUrl) {
                 var ref = new Firebase(fbUrl);
                 var channelRef = {selectedUser: $stateParams.selectedUid, uid: $stateParams.uid};
-                var message = channelRef.uid + ' Started a Chat!';//I started the chat
-                MessageService.create(message, channelRef.uid , channelRef.selectedUser);
-                var messages = $firebaseArray(ref.child('users').child(channelRef.uid).child('messages').child(channelRef.selectedUser)).$loaded();
+                MessageService.createPing(channelRef.uid, channelRef.selectedUser);//send ping to trigger.once()function in homectrl
+                MessageService.get(channelRef.uid, channelRef.selectedUser).then(function(data){
+                    $rootScope.messages = data;
+                });
                 var resources = {
                     channelRef: channelRef,
+                    // messages: messages,
                     AuthService: AuthService,
-                    messages: messages,
                     MessageService: MessageService
                 }
                 return resources;
             },
         }
-    }).state('chatrequest', {
-        url: '/chat/:selectedUid/:uid',
+    });
+    $stateProvider.state('chatrequest', {
+        url: '/chatrequest/:selectedUid/:uid',
         controller: 'MessageCtrl',
         templateUrl: 'views/home.html',
         resolve: {
             resources: function(AuthService, MessageService, $rootScope, $stateParams, $firebaseArray, fbUrl) {
                 var ref = new Firebase(fbUrl);
                 var channelRef = {selectedUser: $stateParams.selectedUid, uid: $stateParams.uid};
-                var messages = $firebaseArray(ref.child('users').child(channelRef.uid).child('messages').child(channelRef.selectedUser)).$loaded();
+                // var messages = $firebaseArray(ref.child('users').child(channelRef.uid).child('messages').child(channelRef.selectedUser)).$loaded(function(data){
+                //     $rootScope.messages = data;
+                // });
+                MessageService.get(channelRef.uid, channelRef.selectedUser).then(function(data){
+                    $rootScope.messages = data;
+                });
+
                 var resources = {
                     channelRef: channelRef,
+                    // messages: messages,
                     AuthService: AuthService,
-                    messages: messages,
                     MessageService: MessageService
                 }
                 return resources;

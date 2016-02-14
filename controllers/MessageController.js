@@ -9,6 +9,13 @@ angular.module("MessageCtrl", []).controller('MessageCtrl', ['$scope', '$state',
         $scope.selectedUser = resources.channelRef.selectedUser;
         $scope.uid = resources.channelRef.uid;
 
-        $scope.messages = resources.messages;
+        var getRef = ref.child('users').child($scope.uid).child('messages').child($scope.selectedUser);
+        $scope.messages = $firebaseArray(getRef);
+
+        ref.child('users').child($scope.uid).child('messages').child($scope.selectedUser).on('child_added', function(){
+            console.log("VALUE CHAGED!!!");
+        });
+
+
     }
 ]);

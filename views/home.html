@@ -13,7 +13,7 @@
                 <ul class="scroll-list">
                     <li ng-repeat="user in $root.users"><h4><a ui-sref="chat({selectedUid: user.uid, uid: $root.user.uid})">{{user.uid}}</a></h4></li>
                 </ul>
-                <div class="panel panel-default" ng-if="$root.$state.includes('chat')">
+                <div class="panel panel-default" ng-if="$root.$state.includes('chat') || $root.$state.includes('chatrequest')">
                 <h1>Chat with {{selectedUser}} </h1>
                     <!-- Panel Title -->
                     <div class="panel-heading">
@@ -27,7 +27,7 @@
                             <hr>
                         </div>
                         <ul id="messages" class="scroll-list">
-                            <li ng-repeat="message in messages">
+                            <li ng-repeat="message in $root.messages">
                                 <h4>{{message.$value}}</h4>
                             </li>
                         </ul>

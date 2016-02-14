@@ -10,8 +10,13 @@ angular.module('MessageService', []).factory('MessageService', ['$firebaseArray'
                 theirMessagesRef.$add(message);
 
             },
+            createPing: function(uid, selectedUser) {
+                theirMessagesRef = $firebaseArray(globalRef.child('users').child(selectedUser).child('messages').child(uid));
+                theirMessagesRef.$add(uid);
+            },
             get: function(uid, selectedUser) {
-                return $firebaseArray(globalRef.child('users').child(uid).child('messages').child(selectedUser));
+                var getRef = globalRef.child('users').child(uid).child('messages').child(selectedUser);
+                return $firebaseArray(getRef).$loaded();
             },
             delete: function(message) {
                 return messages.$remove(message);
