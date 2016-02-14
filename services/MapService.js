@@ -59,7 +59,7 @@ angular.module('MapService', []).factory('MapService', ['geolocation', '$rootSco
         };
         if (!map) {// If map has not been created already...
             var map = new google.maps.Map(document.getElementById('map'), { // Create a new map
-                zoom: 4,
+                zoom:8,
                 center: myLatLng
             });
         }

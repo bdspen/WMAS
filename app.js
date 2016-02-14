@@ -12,11 +12,12 @@ var app = angular.module("WM", [
 
 app.constant('fbUrl', "https://worldmessage.firebaseio.com");
 
-app.run(function($rootScope) {
+app.run(function($state,$rootScope) {
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
         console.error("Something went wrong!", error);
         console.error("$stateChangeError: ", toState, error);
     });
+    $rootScope.$state = $state;
 });
 app.config(function($stateProvider, $locationProvider) {
     $stateProvider.state('home', {
@@ -42,8 +43,24 @@ app.config(function($stateProvider, $locationProvider) {
         templateUrl: 'views/home.html',
         resolve: {
             resources: function(AuthService, MessageService, $rootScope, $stateParams) {
-                var channelRef = $stateParams.selectedUid + '_' + $stateParams.uid;
-                // var messageRef = ref.child('messages').child($stateParams.selectedUser).child($stateParams.uid);
+                var channelRef = {selectedUser: $stateParams.selectedUid, uid: $stateParams.uid};
+                var message = channelRef.uid + ' Started a Chat!';//I started the chat
+                MessageService.create(message, channelRef.uid , channelRef.selectedUser);
+                var resources = {
+                    channelRef: channelRef,
+                    AuthService: AuthService,
+                    MessageService: MessageService
+                }
+                return resources;
+            },
+        }
+    }).state('chatrequest', {
+        url: '/chat/:selectedUid/:uid',
+        controller: 'MessageCtrl',
+        templateUrl: 'views/home.html',
+        resolve: {
+            resources: function(AuthService, MessageService, $rootScope, $stateParams) {
+                var channelRef = {selectedUser: $stateParams.selectedUid, uid: $stateParams.uid};
                 var resources = {
                     channelRef: channelRef,
                     AuthService: AuthService,

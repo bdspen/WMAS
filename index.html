@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/styles/styles.css" media="screen" title="no title" charset="utf-8">
     <!-- AngularJS -->
     <script src="bower_components/angular/angular.js"></script>
     <!-- Firebase -->
@@ -30,11 +31,8 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a href-sref="#/" class="navbar-brand">WorldMessage</a>
+                <a ui-sref="home" class="navbar-brand">WorldMessage</a>
             </div>
-            <ul class="nav navbar-right">
-                <a class="navbar-link " href="#/" ng-click="$root.logOut()">Log Out</a>
-            </ul>
         </div>
     </nav>
     <div ui-view></div>
