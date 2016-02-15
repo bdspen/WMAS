@@ -10,8 +10,12 @@
         </div>
         <div class="col-md-2">
             <div>
-                <ul class="scroll-list">
-                    <li ng-repeat="user in $root.users" class="animate-repeat"><h4><a ui-sref="chat({selectedUid: user.uid, uid: $root.user.uid})">{{user.uid}}</a></h4></li>
+                <ul class="nav nav-pills nav-stacked">
+                    <li ng-repeat="user in $root.users" >
+                        <h4>
+                            <span class="glyphicon glyphicon-green"></span><a ui-sref="chat({selectedUid: user.uid, uid: $root.user.uid})">User</a>
+                        </h4>
+                    </li>
                 </ul>
                 <div class="panel panel-default" ng-if="$root.$state.includes('chat') || $root.$state.includes('chatrequest')">
                 <h1>Chat with {{selectedUser}} </h1>
