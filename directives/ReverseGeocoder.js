@@ -1,4 +1,4 @@
-angular.module('angularReverseGeocode', [])
+angular.module('reverseGeocode', [])
 .directive('reverseGeocode', function () {
     return {
         restrict: 'E',
@@ -9,6 +9,7 @@ angular.module('angularReverseGeocode', [])
             geocoder.geocode({ 'latLng': latlng }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     if (results[1]) {
+                        console.log(results);
                         element.text(results[1].formatted_address);
                     } else {
                         element.text('Location not found');
