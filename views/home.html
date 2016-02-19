@@ -12,8 +12,10 @@
             <div>
                 <div class="list-group">
                     <button class="list-group-item" ng-repeat="user in $root.users" ui-sref="chat({selectedUid: user.uid, uid: $root.user.uid})" >
+                        <div class="user-button">
                             <span class="glyphicon glyphicon-green"></span>
-                            <reverse-geocode lat="{{user.lat}}" lng="{{user.lng}}"/>
+                            <reverse-geocode lat="{{user.lat}}" lng="{{user.lng}}"><reverse-geocode>
+                        </div>
                     </button>
                 </div>
                 <div class="panel panel-default" ng-if="$root.$state.includes('chat') || $root.$state.includes('chatrequest')">

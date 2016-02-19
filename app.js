@@ -2,6 +2,7 @@ var app = angular.module("WM", [
     'ui.router',
     'firebase',
     'geolocation',
+    'angularReverseGeocode',
     'ngAnimate',
     'HomeCtrl',
     'MessageCtrl',
