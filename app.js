@@ -14,7 +14,8 @@ var app = angular.module("WM", [
 
 app.constant('fbUrl', "https://worldmessage.firebaseio.com");
 
-app.run(function($state,$rootScope) {
+app.run(function($state, $rootScope) {
+
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
         console.error("Something went wrong!", error);
         console.error("$stateChangeError: ", toState, error);
@@ -23,7 +24,7 @@ app.run(function($state,$rootScope) {
 });
 app.config(function($stateProvider, $locationProvider) {
     $stateProvider.state('home', {
-        url: '',
+        url: '/',
         controller: 'HomeCtrl',
         templateUrl: 'views/home.html',
         resolve: {
@@ -47,9 +48,12 @@ app.config(function($stateProvider, $locationProvider) {
         resolve: {
             resources: function(AuthService, MessageService, $rootScope, $stateParams, $firebaseArray, fbUrl) {
                 var ref = new Firebase(fbUrl);
-                var channelRef = {selectedUser: $stateParams.selectedUid, uid: $stateParams.uid};
-                MessageService.createPing(channelRef.uid, channelRef.selectedUser);//send ping to trigger.once()function in homectrl
-                MessageService.get(channelRef.uid, channelRef.selectedUser).then(function(data){
+                var channelRef = {
+                    selectedUser: $stateParams.selectedUid,
+                    uid: $stateParams.uid
+                };
+                MessageService.createPing(channelRef.uid, channelRef.selectedUser); //send ping to trigger.once()function in homectrl
+                MessageService.get(channelRef.uid, channelRef.selectedUser).then(function(data) {
                     $rootScope.messages = data;
                 });
                 var resources = {
@@ -69,22 +73,25 @@ app.config(function($stateProvider, $locationProvider) {
         resolve: {
             resources: function(AuthService, MessageService, $rootScope, $stateParams, $firebaseArray, fbUrl) {
                 var ref = new Firebase(fbUrl);
-                var channelRef = {selectedUser: $stateParams.selectedUid, uid: $stateParams.uid};
-                // var messages = $firebaseArray(ref.child('users').child(channelRef.uid).child('messages').child(channelRef.selectedUser)).$loaded(function(data){
-                //     $rootScope.messages = data;
-                // });
-                MessageService.get(channelRef.uid, channelRef.selectedUser).then(function(data){
+                var channelRef = {
+                    selectedUser: $stateParams.selectedUid,
+                    uid: $stateParams.uid
+                };
+                MessageService.get(channelRef.uid, channelRef.selectedUser).then(function(data) {
                     $rootScope.messages = data;
                 });
 
                 var resources = {
                     channelRef: channelRef,
-                    // messages: messages,
                     AuthService: AuthService,
                     MessageService: MessageService
                 }
                 return resources;
             },
         }
+    });
+    $locationProvider.html5Mode({
+        enabled:true,
+        requireBase: false
     });
 });

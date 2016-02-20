@@ -6,8 +6,8 @@ angular.module('MessageService', []).factory('MessageService', ['$firebaseArray'
             create: function(message, uid, selectedUser) {
                 myMessagesRef = $firebaseArray(globalRef.child('users').child(uid).child('messages').child(selectedUser));
                 theirMessagesRef = $firebaseArray(globalRef.child('users').child(selectedUser).child('messages').child(uid));
-                myMessagesRef.$add(message);
-                theirMessagesRef.$add(message);
+                myMessagesRef.$add({message:message, uid:uid});
+                theirMessagesRef.$add({message:message, uid:uid});
 
             },
             createPing: function(uid, selectedUser) {
