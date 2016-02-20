@@ -1,44 +1,33 @@
 <div class="container-fluid">
-    <div class="row">
+    <!-- users list area -->
+    <div ng-hide="$root.$state.includes('chat') || $root.$state.includes('chatrequest')" class="list-group users">
+        <button class="list-group-item" ng-repeat="user in $root.users" ng-click="clickMap(user.uid)">
+            <div class="user-button">
+                <span class="glyphicon glyphicon-green"></span>
+                <reverse-geocode lat="{{user.lat}}" lng="{{user.lng}}"><reverse-geocode>
+            </div>
+        </button>
     </div>
-    <div>
-        <div ng-hide="$root.$state.includes('chat') || $root.$state.includes('chatrequest')" class="list-group users">
-            <button class="list-group-item" ng-repeat="user in $root.users" ng-click="clickMap(user.uid)">
-                <div class="user-button">
-                    <span class="glyphicon glyphicon-green"></span>
-                    <reverse-geocode lat="{{user.lat}}" lng="{{user.lng}}">
-                        <reverse-geocode>
-                </div>
-            </button>
-        </div>
-        <div class="panel panel-default" ng-show="$root.$state.includes('chat') || $root.$state.includes('chatrequest')">
-            <h2>Chat with user from
-                <reverse-geocode lat="{{$root.selectedUser.coords.lat}}" lng="{{$root.selectedUser.coords.lng}}"><reverse-geocode>
-            </h2>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div id="messages" class="messages">
-                        <div ng-repeat="message in $root.messages">
-                            <div ng-if="">
-
-                                <img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
-                            </div>
-                            <h4>{{message.uid}}</h4>
-                            <h4>{{message.message}}</h4>
-                        </div>
-                    </div>
-                    <h2 class="panel-title text-center">
-                        <span class="glyphicon glyphicon-map-marker"></span>
-                    </h2>
-                    <div>
-                        <textarea placeholder="Write a message here!" class="form-control" rows="2" ng-model="newMessageText"></textarea>
-                        <br>
-                        <button class="btn btn-success btn-block" type="submit" ng-click="messageObj.create(newMessageText, uid, selectedUser);newMessageText = null;">Send</button>
-                        <hr>
+    <!-- end users list area -->
+    <!-- start message area -->
+    <div class="panel panel-default" ng-show="$root.$state.includes('chat') || $root.$state.includes('chatrequest')">
+        <div class="panel-heading"><h4>Chat with user from<reverse-geocode lat="{{$root.selectedUser.coords.lat}}" lng="{{$root.selectedUser.coords.lng}}"><reverse-geocode></h4>
+            <div class="panel-body">
+                <div id="messages" class="messages">
+                    <div ng-repeat="message in $root.messages">
+                        <img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
+                        <h4>{{message.uid}}</h4>
+                        <h4>{{message.message}}</h4>
                     </div>
                 </div>
+                <h2 class="panel-title text-center">
+                    <span class="glyphicon glyphicon-map-marker"></span>
+                </h2>
+                <form ng-submit="messageObj.create(newMessageText, uid, selectedUser);newMessageText = null;">
+                    <input placeholder="Write a message here!" class="form-control" ng-model="newMessageText"></input>
+                    <button class="btn btn-success btn-block" type="submit" ng-click="messageObj.create(newMessageText, uid, selectedUser);newMessageText = null;">Send</button>
+                </form>
             </div>
         </div>
     </div>
-</div>
 </div>
