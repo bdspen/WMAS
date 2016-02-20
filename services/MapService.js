@@ -1,11 +1,10 @@
-angular.module('MapService', []).factory('MapService', ['geolocation', '$rootScope', '$firebaseObject', '$firebaseArray', 'MessageService', 'UserService', function(geolocation, $rootScope, $firebaseObject, $firebaseArray, MessageService, UserService) {
+angular.module('MapService', []).factory('MapService', ['geolocation', '$rootScope', '$firebaseObject', '$firebaseArray', 'MessageService', 'UserService', '$state', function(geolocation, $rootScope, $firebaseObject, $firebaseArray, MessageService, UserService, $state) {
     var MapObj = {};
     var locations = [];
     var coords = {};
     var selectedLat = 39.50;
     var selectedLong = -98.35;
     var ref = new Firebase("https://worldmessage.firebaseio.com");
-
 
     geolocation.getLocation().then(function(data){
         // Set the latitude and longitude equal to the HTML5 coordinates
@@ -38,10 +37,6 @@ angular.module('MapService', []).factory('MapService', ['geolocation', '$rootSco
                 // Converts each of the JSON records into Google Maps Location format (Note [Lat, Lng] format).
                 locations.push({
                     latlon: new google.maps.LatLng(user.lat, user.lng),
-                    message: new google.maps.InfoWindow({
-                        content: contentString,
-                        maxWidth: 320 //size of infowindow
-                    }),
                     username: user.name,
                     id: user.$id,
                 });
@@ -75,7 +70,7 @@ angular.module('MapService', []).factory('MapService', ['geolocation', '$rootSco
                 google.maps.event.addListener(marker, 'click', function(e) {
                     // When clicked, open the selected marker's message
                     currentSelectedMarker = n;
-                    n.message.open(map, marker);
+                    infoWindow.close();
                     $rootScope.$apply(function() {
                         var selectedUser = n.id;
                         $rootScope.selectedUser = selectedUser;
@@ -83,7 +78,7 @@ angular.module('MapService', []).factory('MapService', ['geolocation', '$rootSco
                     var line = new google.maps.Polyline({
                         path: [
                             new google.maps.LatLng(n.latlon.lat(), n.latlon.lng()),
-                            new google.maps.LatLng(37.4519, -122.1519)
+                            new google.maps.LatLng(selectedLat, selectedLong)
                         ],
                         strokeColor: "#1919ff",
                         geodesic: true,
@@ -92,21 +87,28 @@ angular.module('MapService', []).factory('MapService', ['geolocation', '$rootSco
                         map: map
                     });
                     line.setMap(map);
+                    $state.go('chat', {selectedUid: $rootScope.selectedUser, uid: $rootScope.user.uid});
                 });
             });
         }
         // Set initial location as a bouncing red marker
         var initialLocation = new google.maps.LatLng(latitude, longitude);
+        var infoWindow = new google.maps.InfoWindow({
+            content: "<h5>This is you! Click on any blue marker: <img src='http://maps.google.com/mapfiles/ms/icons/blue-dot.png'/> to start a chat.</h5>",
+            maxWidth: 300 //size of infowindow
+        });
         var marker = new google.maps.Marker({ //marker is a function to create a new marker
 
             position: initialLocation,
             animation: google.maps.Animation.BOUNCE,
             map: map,
-            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+            infoWindow: infoWindow
         });
         MapObj.lastMarker = marker;
         // Function for moving to a selected location
         map.panTo(new google.maps.LatLng(latitude, longitude));
+        infoWindow.open(map, marker);
     };
     // Refresh the page upon window load. Use the initial latitude and longitude
     google.maps.event.addDomListener(window, 'load',
