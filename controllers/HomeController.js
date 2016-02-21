@@ -12,7 +12,6 @@ angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$state', '$roo
                 $scope.MapObj.refresh($scope.auth.coords.lat, $scope.auth.coords.long);
             }
         });
-        setTimeout(function(){ $scope.MapObj.refresh($scope.auth.coords.lat, $scope.auth.coords.long); }, 7000);
 
         $scope.$watch('auth.authData', function() {
             if($scope.auth.authData){
