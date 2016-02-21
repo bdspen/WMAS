@@ -20,6 +20,7 @@ app.run(function($state, $rootScope) {
         console.error("Something went wrong!", error);
         console.error("$stateChangeError: ", toState, error);
     });
+    $state.go('home');
     $rootScope.$state = $state;
 });
 app.config(function($stateProvider, $locationProvider) {
