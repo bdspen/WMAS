@@ -12,6 +12,8 @@ angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$state', '$roo
                 $scope.MapObj.refresh($scope.auth.coords.lat, $scope.auth.coords.long);
             }
         });
+        setTimeout(function(){ $scope.MapObj.refresh($scope.auth.coords.lat, $scope.auth.coords.long); }, 7000);
+
         $scope.$watch('auth.authData', function() {
             if($scope.auth.authData){
                 //watch users/messages for new child, if there is a new child, go to the chat state with the new child id as selectedUser
@@ -21,6 +23,11 @@ angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$state', '$roo
                         $scope.requester = data.val();
                         var properties = Object.getOwnPropertyNames($scope.requester);
                         $scope.requester = $scope.requester[properties[0]];
+                        for(var i = 0; i < $rootScope.users.length; i++){
+                            if($scope.requester == $rootScope.users[i].uid){
+                                $rootScope.selectedUser = $rootScope.users[i];
+                            }
+                        }
                         $state.go('chatrequest', { selectedUid: $scope.requester, uid: uid });
                     }
                 });

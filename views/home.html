@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <!-- users list area -->
     <div ng-hide="$root.$state.includes('chat') || $root.$state.includes('chatrequest')" class="list-group users">
-        <button class="list-group-item" ng-repeat="user in $root.users" ng-click="clickMap(user.uid)">
+        <button class="list-group-item" ng-repeat="user in $root.users" ng-click="clickMap(user.uid)"ng-hide="user.uid == $root.user.uid">
             <div class="user-button">
                 <span class="glyphicon glyphicon-green"></span>
                 <reverse-geocode lat="{{user.lat}}" lng="{{user.lng}}"><reverse-geocode>
@@ -13,15 +13,13 @@
     <div class="panel panel-default" ng-show="$root.$state.includes('chat') || $root.$state.includes('chatrequest')">
         <div class="panel-heading"><h4>Chat with user from<reverse-geocode lat="{{$root.selectedUser.coords.lat}}" lng="{{$root.selectedUser.coords.lng}}"><reverse-geocode></h4>
             <div class="panel-body">
-                <div id="messages" class="messages">
+                <div id="messages">
                     <div ng-repeat="message in $root.messages">
                         <div class="message-list" ng-show="message.uid == $root.user.uid">
-                            <img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
-                            <p>{{message.message}}</p>
+                            <div class="message-image-text"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" class="message-image" />{{message.message}}</div>
                         </div>
                         <div class="message-list" ng-show="message.uid == $root.selectedUser.uid">
-                            <img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
-                            <p>{{message.message}}</p>
+                            <div class="message-image-text"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" class="message-image" />{{message.message}}</div>
                         </div>
                     </div>
                 </div>
@@ -30,7 +28,7 @@
                 </h2>
                 <form ng-submit="messageObj.create(newMessageText, uid, selectedUser);newMessageText = null;">
                     <input placeholder="Write a message here!" class="form-control" ng-model="newMessageText"></input>
-                    <button class="btn btn-success btn-block" type="submit" ng-click="messageObj.create(newMessageText, uid, selectedUser);newMessageText = null;">Send</button>
+                    <button class="btn btn-success btn-block" type="submit" ng-click="messageObj.create(newMessageText, uid, selectedUserId);newMessageText = null;">Send</button>
                 </form>
             </div>
         </div>

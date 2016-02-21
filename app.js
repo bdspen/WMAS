@@ -23,7 +23,7 @@ app.run(function($state, $rootScope) {//allows for statechange errors to be show
     $rootScope.$state = $state;
 });
 
-app.config(function($stateProvider, $locationProvider) {
+app.config(function($stateProvider, $locationProvider, $urlRouterProvider) {
     $stateProvider.state('home', {
         url: '/',
         controller: 'HomeCtrl',
@@ -41,8 +41,7 @@ app.config(function($stateProvider, $locationProvider) {
                 return resources;
             },
         }
-    });
-    $stateProvider.state('chat', {
+    }).state('chat', {
         url: '/chat/:selectedUid/:uid',
         controller: 'MessageCtrl',
         templateUrl: 'views/home.html',
@@ -50,11 +49,11 @@ app.config(function($stateProvider, $locationProvider) {
             resources: function(AuthService, MessageService, $rootScope, $stateParams, $firebaseArray, fbUrl) {
                 var ref = new Firebase(fbUrl);
                 var channelRef = {
-                    selectedUser: $stateParams.selectedUid,
+                    selectedUserId: $stateParams.selectedUid,
                     uid: $stateParams.uid
                 };
-                MessageService.createPing(channelRef.uid, channelRef.selectedUser); //send ping to trigger.once()function in homectrl
-                MessageService.get(channelRef.uid, channelRef.selectedUser).then(function(data) {
+                MessageService.createPing(channelRef.uid, channelRef.selectedUserId); //send ping to trigger.once()function in homectrl
+                MessageService.get(channelRef.uid, channelRef.selectedUserId).then(function(data) {
                     $rootScope.messages = data;
                 });
                 var resources = {
@@ -66,8 +65,7 @@ app.config(function($stateProvider, $locationProvider) {
                 return resources;
             },
         }
-    });
-    $stateProvider.state('chatrequest', {
+    }).state('chatrequest', {
         url: '/chatrequest/:selectedUid/:uid',
         controller: 'MessageCtrl',
         templateUrl: 'views/home.html',
@@ -75,10 +73,10 @@ app.config(function($stateProvider, $locationProvider) {
             resources: function(AuthService, MessageService, $rootScope, $stateParams, $firebaseArray, fbUrl) {
                 var ref = new Firebase(fbUrl);
                 var channelRef = {
-                    selectedUser: $stateParams.selectedUid,
+                    selectedUserId: $stateParams.selectedUid,
                     uid: $stateParams.uid
                 };
-                MessageService.get(channelRef.uid, channelRef.selectedUser).then(function(data) {
+                MessageService.get(channelRef.uid, channelRef.selectedUserId).then(function(data) {
                     $rootScope.messages = data;
                 });
 
@@ -91,6 +89,7 @@ app.config(function($stateProvider, $locationProvider) {
             },
         }
     });
+    $urlRouterProvider.otherwise("/");
     $locationProvider.html5Mode({
         enabled:true,
         requireBase: false

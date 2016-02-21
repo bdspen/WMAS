@@ -48,7 +48,7 @@ angular.module('MapService', []).factory('MapService', ['geolocation', '$rootSco
         }
         if(locations){
             locations.forEach(function(n, i) { // Loop through each location in the array and place a marker
-                var marker = new google.maps.Marker({//creates a new marker object
+                var marker = new google.maps.Marker({ //creates a new marker object
                     position: n.latlon,
                     map: map,
                     title: "Big Map",
