@@ -6,13 +6,6 @@ angular.module('MapService', []).factory('MapService', ['geolocation', '$rootSco
     var selectedLat = 39.50;//default lat
     var selectedLong = -98.35;//default lng
 
-    geolocation.getLocation().then(function(data){
-        // Set the latitude and longitude equal to the HTML5 coordinates
-        coords = {lat:data.coords.latitude, long:data.coords.longitude};
-        MapObj.refresh(coords.lat, coords.long);
-    });
-
-    // Refresh the Map with new data.
     MapObj.refresh = function(latitude, longitude) {
         // Clears the array of locations
         locations = [];

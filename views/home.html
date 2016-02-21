@@ -15,9 +15,14 @@
             <div class="panel-body">
                 <div id="messages" class="messages">
                     <div ng-repeat="message in $root.messages">
-                        <img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
-                        <h4>{{message.uid}}</h4>
-                        <h4>{{message.message}}</h4>
+                        <div class="message-list" ng-show="message.uid == $root.user.uid">
+                            <img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
+                            <p>{{message.message}}</p>
+                        </div>
+                        <div class="message-list" ng-show="message.uid == $root.selectedUser.uid">
+                            <img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
+                            <p>{{message.message}}</p>
+                        </div>
                     </div>
                 </div>
                 <h2 class="panel-title text-center">

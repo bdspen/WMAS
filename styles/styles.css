@@ -11,13 +11,7 @@
 #map.ng-hide {
     opacity: 0;
 }
-.animate-repeat {
-    list-style: none;
-    /*box-sizing:border-box;*/
-    border-bottom: 1px solid white;
-    -webkit-transition: 1s linear all;
-    transition: 1s linear all;
-}
+
 .navbar {
     -webkit-box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
     -moz-box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
@@ -48,4 +42,7 @@
     font-weight: bold;
 }
 .navbar-fixed-bottom{
+}
+.message-list{
+    display: inline;
 }

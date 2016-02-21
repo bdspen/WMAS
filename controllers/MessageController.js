@@ -14,7 +14,7 @@ angular.module("MessageCtrl", []).controller('MessageCtrl', ['$scope', '$state',
         $scope.messages = $firebaseArray(getRef);
 
         ref.child('users').child($scope.uid).child('messages').child($scope.selectedUser).on('child_added', function(){
-            console.log("New Message");
+            // console.log("New Message");
         });
 
 

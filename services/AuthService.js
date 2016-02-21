@@ -8,10 +8,10 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
         var connectedRef = ref.child('.info').child('connected');
         connectedRef.on('value', function(snap) {
             if (snap.val() === true) {
-                console.log('were connected');
+                // console.log('were connected');
                 userRef.onDisconnect().remove();
             } else {
-                console.log('were Disconnected');
+                // console.log('were Disconnected');
             }
         });
     }
@@ -19,9 +19,9 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
     AuthObj.anon = function() {
         ref.authAnonymously(function(error, authData) {
             if (error) {
-                console.log("Login Failed!", error);
+                // console.log("Login Failed!", error);
             } else {
-                console.log("Authenticated successfully with payload:", authData);
+                // console.log("Authenticated successfully with payload:", authData);
                 AuthObj.saveUser(authData);
                 AuthObj.connect(authData);
             }

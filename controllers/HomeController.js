@@ -2,14 +2,14 @@ angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$state', '$roo
     function($scope, $state, $rootScope, resources, MapService, fbUrl) {
 
         var ref = new Firebase(fbUrl);
-        $scope.MapObj = MapService;
         $scope.auth = resources.AuthService; //contains user's data from AuthService
         $scope.clickMap = function(userId){
             google.maps.event.trigger($scope.MapObj.markers[userId], 'click');
         }
         $scope.$watch('auth.coords', function() {
             if($scope.auth.coords){
-                MapService.refresh($scope.auth.coords.lat, $scope.auth.coords.long);
+                $scope.MapObj = MapService;
+                $scope.MapObj.refresh($scope.auth.coords.lat, $scope.auth.coords.long);
             }
         });
         $scope.$watch('auth.authData', function() {
