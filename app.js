@@ -14,12 +14,15 @@ var app = angular.module("WM", [
 
 app.constant('fbUrl', "https://worldmessage.firebaseio.com");
 
-app.run(function($state, $rootScope) {//allows for statechange errors to be shown in console
+app.run(function($state, $rootScope) { //allows for statechange errors to be shown in console
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
         console.error("Something went wrong!", error);
         console.error("$stateChangeError: ", toState, error);
     });
-    $state.go('home');//go home on start
+    $rootScope.$on('$stateChangeSuccess',function(event, toState, toParams, fromState, fromParams){
+        $rootScope.containerClasses = toState.containerClasses;
+    });
+    $state.go('home'); //go home on start
     $rootScope.$state = $state;
 });
 
@@ -28,6 +31,7 @@ app.config(function($stateProvider, $locationProvider, $urlRouterProvider) {
         url: '/',
         controller: 'HomeCtrl',
         templateUrl: 'views/home.html',
+        containerClasses: ["col-md-8", "col-md-4"],
         resolve: {
             resources: function(AuthService, UserService, MessageService, $rootScope) {
                 AuthService.anon();
@@ -45,6 +49,7 @@ app.config(function($stateProvider, $locationProvider, $urlRouterProvider) {
         url: '/chat/:selectedUid/:uid',
         controller: 'MessageCtrl',
         templateUrl: 'views/home.html',
+        containerClasses: ["col-md-5", "col-md-7"],
         resolve: {
             resources: function(AuthService, MessageService, $rootScope, $stateParams, $firebaseArray, fbUrl) {
                 var ref = new Firebase(fbUrl);
@@ -69,6 +74,7 @@ app.config(function($stateProvider, $locationProvider, $urlRouterProvider) {
         url: '/chatrequest/:selectedUid/:uid',
         controller: 'MessageCtrl',
         templateUrl: 'views/home.html',
+        containerClasses: ["col-md-5", "col-md-7"],
         resolve: {
             resources: function(AuthService, MessageService, $rootScope, $stateParams, $firebaseArray, fbUrl) {
                 var ref = new Firebase(fbUrl);

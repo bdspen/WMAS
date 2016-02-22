@@ -1,17 +1,20 @@
 <div class="container-fluid">
     <!-- users list area -->
-    <div ng-hide="$root.$state.includes('chat') || $root.$state.includes('chatrequest')" class="list-group users">
-        <button class="list-group-item" ng-repeat="user in $root.users" ng-click="clickMap(user.uid)"ng-hide="user.uid == $root.user.uid">
-            <div class="user-button">
-                <span class="glyphicon glyphicon-green"></span>
-                <reverse-geocode lat="{{user.lat}}" lng="{{user.lng}}"><reverse-geocode>
-            </div>
-        </button>
+    <div ng-hide="$root.$state.includes('chat') || $root.$state.includes('chatrequest')">
+        <h2>Click on any user to start a chat.</h2>
+        <div class="list-group users">
+            <button class="list-group-item" ng-repeat="user in $root.users" ng-click="clickMap(user.uid)" ng-hide="user.uid == $root.user.uid">
+                <div class="user-button">
+                    <span class="glyphicon glyphicon-green"></span>
+                    <reverse-geocode lat="{{user.lat}}" lng="{{user.lng}}"><reverse-geocode>
+                </div>
+            </button>
+        </div>
     </div>
     <!-- end users list area -->
     <!-- start message area -->
     <div class="panel panel-default" ng-show="$root.$state.includes('chat') || $root.$state.includes('chatrequest')">
-        <div class="panel-heading"><h4>Chat with user from<reverse-geocode lat="{{$root.selectedUser.coords.lat}}" lng="{{$root.selectedUser.coords.lng}}"><reverse-geocode></h4>
+        <div id="message-panel" class="panel-heading"><h4>Chat with user from<reverse-geocode lat="{{$root.selectedUser.coords.lat}}" lng="{{$root.selectedUser.coords.lng}}"><reverse-geocode></h4>
             <div class="panel-body">
                 <div id="messages">
                     <div ng-repeat="message in $root.messages">
@@ -28,6 +31,7 @@
                 </h2>
                 <form ng-submit="messageObj.create(newMessageText, uid, selectedUser);newMessageText = null;">
                     <input placeholder="Write a message here!" class="form-control" ng-model="newMessageText"></input>
+                    <br>
                     <button class="btn btn-success btn-block" type="submit" ng-click="messageObj.create(newMessageText, uid, selectedUserId);newMessageText = null;">Send</button>
                 </form>
             </div>

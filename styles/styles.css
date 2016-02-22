@@ -1,7 +1,6 @@
 * {
-  border-radius: 1px !important;
+    border-radius: 3px !important;
 }
-
 #map {
     display: block;
     height: 700px;
@@ -11,7 +10,6 @@
 #map.ng-hide {
     opacity: 0;
 }
-
 .navbar {
     -webkit-box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
     -moz-box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
@@ -25,10 +23,15 @@
     box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
 }
 #messages {
-   max-height: 350px;
-   overflow: auto;
+    height:500px;
+    max-height: 500px;
+    overflow: auto;
+    background-color: white;
+    border: 2px solid;
+    border-style: inset;
+    padding: 3px;
 }
-.users{
+.users {
     -webkit-box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
     -moz-box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
     box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
@@ -41,9 +44,18 @@
     display: inline;
     font-weight: bold;
 }
-
-.message-img-text{
+.message-img-text {
     display: inline;
     margin: 0;
     padding: 0;
+}
+.panel > .panel-heading {
+    background-image: none;
+    -webkit-box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
+    -moz-box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
+    box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
+
+}
+#message-panel{
+    height: 700px;
 }
