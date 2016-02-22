@@ -3,6 +3,7 @@ var app = angular.module("WM", [
     'firebase',
     'geolocation',
     'angularReverseGeocode',
+    'ReverseGeocodeService',
     'ngAnimate',
     'HomeCtrl',
     'MessageCtrl',

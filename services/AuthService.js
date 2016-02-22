@@ -1,4 +1,4 @@
-angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geolocation', 'UserService', '$rootScope', '$state', 'fbUrl', function($firebaseAuth, geolocation, UserService, $rootScope, $state, fbUrl) {
+angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geolocation', 'UserService', '$rootScope', '$state', 'fbUrl', 'ReverseGeocodeService', function($firebaseAuth, geolocation, UserService, $rootScope, $state, fbUrl, ReverseGeocodeService) {
     var ref = new Firebase(fbUrl);
     var AuthObj = {};
     var auth = $firebaseAuth(ref);
@@ -36,7 +36,8 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
         geolocation.getLocation().then(function(data){
             AuthObj.coords = {lat:data.coords.latitude.toFixed(3), long:data.coords.longitude.toFixed(3)}; // Set the latitude and longitude equal to the HTML5 coordinates
             $rootScope.user.coords = AuthObj.coords;
-            userRef.set({uid: uid, lat: AuthObj.coords.lat , lng: AuthObj.coords.long });
+            $rootScope.user.address = ReverseGeocodeService(AuthObj.coords.lat, AuthObj.coords.long);
+            userRef.set({uid: uid, lat: AuthObj.coords.lat , lng: AuthObj.coords.long, address: $rootScope.user.address });
         });
         AuthObj.authData = authData;
     }

@@ -12,11 +12,8 @@ angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$state', '$roo
                 MapService.refresh($scope.auth.coords.lat, $scope.auth.coords.long);
             }
         });
-        // $scope.$watch('users', function(){
-        //     console.log("users loaded");
-        //     ref.child('users').on('child_added', function() {
-        //         MapService.refresh($scope.auth.coords.lat, $scope.auth.coords.long);
-        //     });
+        // ref.child('users').on('child_added', function() {
+        //     MapService.refresh($scope.auth.coords.lat, $scope.auth.coords.long);
         // });
 
         $scope.$watch('auth.authData', function() {
