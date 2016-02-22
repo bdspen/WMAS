@@ -14,6 +14,9 @@ angular.module("MessageCtrl", []).controller('MessageCtrl', ['$scope', '$state',
         ref.child('users').child($scope.uid).child('messages').child($scope.selectedUserId).on('child_added', function(){
             // console.log("New Message");
         });
+        ref.child('users').child($rootScope.selectedUser).on("value",function(){
+            $state.go("home");
+        });
 
 
     }

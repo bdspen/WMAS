@@ -35,9 +35,7 @@ app.config(function($stateProvider, $locationProvider, $urlRouterProvider) {
         resolve: {
             resources: function(AuthService, UserService, MessageService, $rootScope) {
                 AuthService.anon();
-                UserService().then(function(data) {
-                    $rootScope.users = data;
-                });
+                $rootScope.users = UserService();
                 var resources = {
                     AuthService: AuthService,
                     MessageService: MessageService
