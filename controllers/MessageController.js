@@ -1,23 +1,19 @@
-angular.module("MessageCtrl", []).controller('MessageCtrl', ['$scope', '$state', '$rootScope', 'resources', 'fbUrl', '$firebaseArray',
-    function($scope, $state, $rootScope, resources, fbUrl, $firebaseArray) {
+angular.module("MessageCtrl", []).controller('MessageCtrl', ['$scope', '$state', '$rootScope', 'resources', 'fbUrl', '$firebaseArray', '$firebaseObject',
+    function($scope, $state, $rootScope, resources, fbUrl, $firebaseArray, $firebaseObject) {
 
         var ref = new Firebase(fbUrl);
-
         $scope.uid = resources.channelRef.uid;
-        $scope.selectedUserId = resources.channelRef.selectedUserId;
+        $rootScope.selectedUser = resources.channelRef.selectedUser;
         $scope.messageObj = resources.MessageService; //contains functions for messaging
-        $scope.AuthObj = resources.AuthService; //contains functions for messaging
-
-        var getRef = ref.child('users').child($scope.uid).child('messages').child($scope.selectedUserId);
+        var getRef = ref.child('users').child($scope.uid).child('messages').child($scope.selectedUser.uid);
         $scope.messages = $firebaseArray(getRef);
 
-        ref.child('users').child($scope.uid).child('messages').child($scope.selectedUserId).on('child_added', function(){
+        ref.child('users').child($scope.uid).child('messages').child($scope.selectedUser.uid).on('child_added', function(){
             // console.log("New Message");
         });
-        ref.child('users').child($rootScope.selectedUser).on("value",function(){
-            $state.go("home");
-        });
-
+        // ref.child('users').child($rootScope.selectedUser.uid).on("value",function(){
+        //     $state.go("home");
+        // });
 
     }
 ]);

@@ -2,7 +2,6 @@ var app = angular.module("WM", [
     'ui.router',
     'firebase',
     'geolocation',
-    'angularReverseGeocode',
     'ReverseGeocodeService',
     'ngAnimate',
     'HomeCtrl',
@@ -50,22 +49,25 @@ app.config(function($stateProvider, $locationProvider, $urlRouterProvider) {
         templateUrl: 'views/home.html',
         containerClasses: ["col-md-5", "col-md-7"],
         resolve: {
-            resources: function(AuthService, MessageService, $rootScope, $stateParams, $firebaseArray, fbUrl) {
-                var ref = new Firebase(fbUrl);
-                var channelRef = {
-                    selectedUserId: $stateParams.selectedUid,
-                    uid: $stateParams.uid
-                };
-                MessageService.createPing(channelRef.uid, channelRef.selectedUserId); //send ping to trigger.once()function in homectrl
-                MessageService.get(channelRef.uid, channelRef.selectedUserId).then(function(data) {
-                    $rootScope.messages = data;
-                });
+            resources: function(MessageService, $rootScope, $stateParams, $firebaseObject, fbUrl) {
+                var selectedUserRef = new Firebase(fbUrl).child('users').child($stateParams.selectedUid);
                 var resources = {
-                    channelRef: channelRef,
-                    // messages: messages,
-                    AuthService: AuthService,
+                    channelRef: {
+                        selectedUser: {},
+                        uid: $stateParams.uid
+                    },
                     MessageService: MessageService
                 }
+                $firebaseObject(selectedUserRef).$loaded().then(function(data){
+                    resources.channelRef.selectedUser = data;
+                });
+
+                MessageService.createPing($stateParams.uid, $stateParams.selectedUid); //send ping to trigger.once()function in homectrl
+                MessageService.get($stateParams.uid, $stateParams.selectedUid).then(function(data) {
+                    $rootScope.messages = data;
+                });
+
+
                 return resources;
             },
         }
@@ -75,21 +77,23 @@ app.config(function($stateProvider, $locationProvider, $urlRouterProvider) {
         templateUrl: 'views/home.html',
         containerClasses: ["col-md-5", "col-md-7"],
         resolve: {
-            resources: function(AuthService, MessageService, $rootScope, $stateParams, $firebaseArray, fbUrl) {
-                var ref = new Firebase(fbUrl);
-                var channelRef = {
-                    selectedUserId: $stateParams.selectedUid,
-                    uid: $stateParams.uid
-                };
-                MessageService.get(channelRef.uid, channelRef.selectedUserId).then(function(data) {
+            resources: function(MessageService, $rootScope, $stateParams, $firebaseObject, fbUrl) {
+
+                var selectedUserRef = new Firebase(fbUrl).child('users').child($stateParams.selectedUid);
+                var resources = {
+                    channelRef: {
+                        selectedUser: {},
+                        uid: $stateParams.uid
+                    },
+                    MessageService: MessageService
+                }
+                $firebaseObject(selectedUserRef).$loaded().then(function(data){
+                    resources.channelRef.selectedUser = data;
+                });
+                MessageService.get($stateParams.uid, $stateParams.selectedUid).then(function(data) {
                     $rootScope.messages = data;
                 });
 
-                var resources = {
-                    channelRef: channelRef,
-                    AuthService: AuthService,
-                    MessageService: MessageService
-                }
                 return resources;
             },
         }

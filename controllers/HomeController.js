@@ -5,7 +5,7 @@ angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$state', '$roo
         $scope.users = $rootScope.users;
         $scope.auth = resources.AuthService; //contains user's data from AuthService
         $scope.clickMap = function(userId){
-            google.maps.event.trigger($scope.MapObj.markers[userId], 'click');
+            google.maps.event.trigger(MapService.markers[userId], 'click');
         }
         $scope.$watch('auth.coords', function() {
             if($scope.auth.coords){
