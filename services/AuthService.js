@@ -8,11 +8,10 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
         var connectedRef = ref.child('.info').child('connected');
         connectedRef.on('value', function(snap) {
             if (snap.val() === true) {
-                // console.log('were connected');
                 //disable next line to allow users to persist.
                 userRef.onDisconnect().remove();
             } else {
-                // console.log('were Disconnected');
+                $state.go('home');
             }
         });
     }
@@ -31,12 +30,11 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
         });
     }
     AuthObj.saveUser = function(authData){
-        console.trace();
         var userRef = ref.child('users').child(authData.uid);
         var uid = authData.uid;
         $rootScope.user = authData;
         geolocation.getLocation().then(function(data){
-            AuthObj.coords = {lat:data.coords.latitude.toFixed(3), long:data.coords.longitude.toFixed(3)}; // Set the latitude and longitude equal to the HTML5 coordinates
+            AuthObj.coords = {lat:parseFloat(data.coords.latitude.toFixed(3)), long:parseFloat(data.coords.longitude.toFixed(3))}; // Set the latitude and longitude equal to the HTML5 coordinates
             $rootScope.user.coords = AuthObj.coords;
             ReverseGeocodeService.numberOfLocations(AuthObj.coords.lat, AuthObj.coords.long).then(function(address){
                 $rootScope.user.address = address;

@@ -1,20 +1,31 @@
-angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$state', '$rootScope', 'resources', 'MapService', 'fbUrl',
-    function($scope, $state, $rootScope, resources, MapService, fbUrl) {
+angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$state', '$rootScope', 'resources', 'MapService', 'fbUrl', '$timeout',
+    function($scope, $state, $rootScope, resources, MapService, fbUrl, $timeout) {
 
         var ref = new Firebase(fbUrl);
-        $scope.users = $rootScope.users;
+        var anyNewItems = false;
+        $scope.newUsers = [];
         $scope.auth = resources.AuthService; //contains user's data from AuthService
         $scope.clickMap = function(userId){
             google.maps.event.trigger(MapService.markers[userId], 'click');
         }
         $scope.$watch('auth.coords', function() {
             if($scope.auth.coords){
+                ref.child('users').on('child_added', function(val) {
+                    if (!anyNewItems)return;
+                        var newUser = val.val();
+                        $scope.newUsers.push(newUser);
+                        // MapService.createMarker(newUser);
+                });
+                ref.child('users').once('value', function(messages) {
+                    anyNewItems = true;
+                });
                 MapService.refresh($scope.auth.coords.lat, $scope.auth.coords.long);
             }
         });
-        // ref.child('users').on('child_added', function() {
-        //     MapService.refresh($scope.auth.coords.lat, $scope.auth.coords.long);
-        // });
+        $scope.refresh = function(){
+            MapService.refresh($scope.auth.coords.lat, $scope.auth.coords.long);
+            $scope.newUsers = [];
+        }
 
         $scope.$watch('auth.authData', function() {
             if($scope.auth.authData){

@@ -52,14 +52,12 @@ app.config(function($stateProvider, $locationProvider, $urlRouterProvider) {
             resources: function(MessageService, $rootScope, $stateParams, $firebaseObject, fbUrl) {
                 var selectedUserRef = new Firebase(fbUrl).child('users').child($stateParams.selectedUid);
                 var resources = {
-                    channelRef: {
-                        selectedUser: {},
-                        uid: $stateParams.uid
-                    },
+                    uid: $stateParams.uid,
+                    selectedUser: {},
                     MessageService: MessageService
                 }
                 $firebaseObject(selectedUserRef).$loaded().then(function(data){
-                    resources.channelRef.selectedUser = data;
+                    resources.selectedUser = data;
                 });
 
                 MessageService.createPing($stateParams.uid, $stateParams.selectedUid); //send ping to trigger.once()function in homectrl
@@ -81,14 +79,12 @@ app.config(function($stateProvider, $locationProvider, $urlRouterProvider) {
 
                 var selectedUserRef = new Firebase(fbUrl).child('users').child($stateParams.selectedUid);
                 var resources = {
-                    channelRef: {
-                        selectedUser: {},
-                        uid: $stateParams.uid
-                    },
+                    uid: $stateParams.uid,
+                    selectedUser: {},
                     MessageService: MessageService
                 }
                 $firebaseObject(selectedUserRef).$loaded().then(function(data){
-                    resources.channelRef.selectedUser = data;
+                    resources.selectedUser = data;
                 });
                 MessageService.get($stateParams.uid, $stateParams.selectedUid).then(function(data) {
                     $rootScope.messages = data;

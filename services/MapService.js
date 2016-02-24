@@ -21,8 +21,6 @@ angular.module('MapService', []).factory('MapService', ['geolocation', '$rootSco
             var locations = [];// Clear the locations holder
             for (var i = 0; i < users.length; i++) {// Loop through all of the user locations provided in the response
                 var user = users[i];
-                var contentString =// Create popup windows for each record
-                    '<h4>' + user.name + '</h4>';
                 // Converts each of the JSON records into Google Maps Location format (Note [Lat, Lng] format).
                 locations.push({
                     latlon: new google.maps.LatLng(user.lat, user.lng),
@@ -48,6 +46,7 @@ angular.module('MapService', []).factory('MapService', ['geolocation', '$rootSco
         }
         if(locations){
             locations.forEach(function(n, i) { // Loop through each location in the array and place a marker
+
                 var marker = new google.maps.Marker({ //creates a new marker object
                     position: n.latlon,
                     map: map,
@@ -91,7 +90,7 @@ angular.module('MapService', []).factory('MapService', ['geolocation', '$rootSco
                     // go to chat state to start chat
                     $state.go('chat', {selectedUid: $rootScope.selectedUser.uid, uid: $rootScope.user.uid});
                 });
-            });//end locations forEach
+            });
         }
         // Set initial location as a bouncing red marker
         var initialLocation = new google.maps.LatLng(latitude, longitude);

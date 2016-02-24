@@ -2,8 +2,11 @@
     <!-- users list area -->
     <div ng-hide="$root.$state.includes('chat') || $root.$state.includes('chatrequest')">
         <h2>Click on any user to start a chat.</h2>
+        <div ng-if="newUsers.length > 1">
+            <h4>A new user has joined! click<a ng-click="refresh()"> Here</a> to refresh the map</h4>
+        </div>
         <div class="list-group users">
-            <button class="list-group-item" ng-repeat="user in $root.users" ng-click="clickMap(user.uid)" ng-hide="user.uid == $root.user.uid">
+            <button class="list-group-item" ng-repeat="user in $root.users" ng-if="user.uid != newUsers[1].uid"ng-click="clickMap(user.uid)" ng-hide="user.uid == $root.user.uid">
                 <div class="user-button">
                     <span class="glyphicon glyphicon-green"></span>
                     <h4>{{user.address}}</h4>
