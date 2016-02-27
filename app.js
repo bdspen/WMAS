@@ -19,86 +19,91 @@ app.run(function($state, $rootScope) { //allows for statechange errors to be sho
         console.error("Something went wrong!", error);
         console.error("$stateChangeError: ", toState, error);
     });
-    $rootScope.$on('$stateChangeSuccess',function(event, toState, toParams, fromState, fromParams){
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         $rootScope.containerClasses = toState.containerClasses;
     });
+    $rootScope.authOnce = true;
     $state.go('home'); //go home on start
     $rootScope.$state = $state;
 });
 
 app.config(function($stateProvider, $locationProvider, $urlRouterProvider) {
-    $stateProvider.state('home', {
-        url: '/',
-        controller: 'HomeCtrl',
-        templateUrl: 'views/home.html',
-        containerClasses: ["col-md-8", "col-md-4"],
-        resolve: {
-            resources: function(AuthService, UserService, MessageService, $rootScope) {
-                if(!AuthService.authData){
-                    AuthService.anon();        
-                }
-                $rootScope.users = UserService();
-                var resources = {
-                    AuthService: AuthService,
-                    MessageService: MessageService
-                }
-                return resources;
-            },
-        }
-    }).state('chat', {
-        url: '/chat/:selectedUid/:uid',
-        controller: 'MessageCtrl',
-        templateUrl: 'views/home.html',
-        containerClasses: ["col-md-5", "col-md-7"],
-        resolve: {
-            resources: function(MessageService, $rootScope, $stateParams, $firebaseObject, fbUrl) {
-                var selectedUserRef = new Firebase(fbUrl).child('users').child($stateParams.selectedUid);
-                var resources = {
-                    uid: $stateParams.uid,
-                    selectedUser: {},
-                    MessageService: MessageService
-                }
-                $firebaseObject(selectedUserRef).$loaded().then(function(data){
-                    resources.selectedUser = data;
+            $stateProvider.state('home', {
+                    url: '/',
+                    controller: 'HomeCtrl',
+                    templateUrl: 'views/home.html',
+                    containerClasses: ["col-md-8", "col-md-4"],
+                    resolve: {
+                        resources: function(AuthService, UserService, MessageService, $rootScope) {
+                            if (!AuthService.authData && $rootScope.authOnce == true) {
+                                AuthService.anon();
+                                $rootScope.authOnce = false;
+                            }
+                            if ($rootScope.selectedUser) {
+                                MessageService.removePing($rootScope.user.uid, $rootScope.selectedUser.uid);
+                            }
+
+                                $rootScope.users = UserService();
+                                var resources = {
+                                    AuthService: AuthService,
+                                    MessageService: MessageService
+                                }
+                                return resources;
+                            },
+                        }
+                    }).state('chat', {
+                    url: '/chat/:selectedUid/:uid',
+                    controller: 'MessageCtrl',
+                    templateUrl: 'views/home.html',
+                    containerClasses: ["col-md-5", "col-md-7"],
+                    resolve: {
+                        resources: function(MessageService, $rootScope, $stateParams, $firebaseObject, fbUrl) {
+                            var selectedUserRef = new Firebase(fbUrl).child('users').child($stateParams.selectedUid);
+                            var resources = {
+                                uid: $stateParams.uid,
+                                selectedUser: {},
+                                MessageService: MessageService
+                            }
+                            $firebaseObject(selectedUserRef).$loaded().then(function(data) {
+                                resources.selectedUser = data;
+                            });
+
+                            MessageService.createPing($stateParams.uid, $stateParams.selectedUid); //send ping to trigger.once()function in homectrl
+                            MessageService.get($stateParams.uid, $stateParams.selectedUid).then(function(data) {
+                                $rootScope.messages = data;
+                            });
+
+
+                            return resources;
+                        },
+                    }
+                }).state('chatrequest', {
+                    url: '/chatrequest/:selectedUid/:uid',
+                    controller: 'MessageCtrl',
+                    templateUrl: 'views/home.html',
+                    containerClasses: ["col-md-5", "col-md-7"],
+                    resolve: {
+                        resources: function(MessageService, $rootScope, $stateParams, $firebaseObject, fbUrl) {
+
+                            var selectedUserRef = new Firebase(fbUrl).child('users').child($stateParams.selectedUid);
+                            var resources = {
+                                uid: $stateParams.uid,
+                                selectedUser: {},
+                                MessageService: MessageService
+                            }
+                            $firebaseObject(selectedUserRef).$loaded().then(function(data) {
+                                resources.selectedUser = data;
+                            });
+                            MessageService.createPing($stateParams.uid, $stateParams.selectedUid); //send ping to trigger.once()function in homectrl
+                            MessageService.get($stateParams.uid, $stateParams.selectedUid).then(function(data) {
+                                $rootScope.messages = data;
+                            });
+
+                            return resources;
+                        },
+                    }
+                }); $urlRouterProvider.otherwise("/"); $locationProvider.html5Mode({
+                    enabled: true,
+                    requireBase: false
                 });
-
-                MessageService.createPing($stateParams.uid, $stateParams.selectedUid); //send ping to trigger.once()function in homectrl
-                MessageService.get($stateParams.uid, $stateParams.selectedUid).then(function(data) {
-                    $rootScope.messages = data;
-                });
-
-
-                return resources;
-            },
-        }
-    }).state('chatrequest', {
-        url: '/chatrequest/:selectedUid/:uid',
-        controller: 'MessageCtrl',
-        templateUrl: 'views/home.html',
-        containerClasses: ["col-md-5", "col-md-7"],
-        resolve: {
-            resources: function(MessageService, $rootScope, $stateParams, $firebaseObject, fbUrl) {
-
-                var selectedUserRef = new Firebase(fbUrl).child('users').child($stateParams.selectedUid);
-                var resources = {
-                    uid: $stateParams.uid,
-                    selectedUser: {},
-                    MessageService: MessageService
-                }
-                $firebaseObject(selectedUserRef).$loaded().then(function(data){
-                    resources.selectedUser = data;
-                });
-                MessageService.get($stateParams.uid, $stateParams.selectedUid).then(function(data) {
-                    $rootScope.messages = data;
-                });
-
-                return resources;
-            },
-        }
-    });
-    $urlRouterProvider.otherwise("/");
-    $locationProvider.html5Mode({
-        enabled:true,
-        requireBase: false
-    });
-});
+            });

@@ -4,15 +4,19 @@ angular.module('MessageService', []).factory('MessageService', ['$firebaseArray'
 
         var Message = {
             create: function(message, uid, selectedUserUid) {
-                myMessagesRef = $firebaseArray(globalRef.child('users').child(uid).child('messages').child(selectedUserUid));
-                theirMessagesRef = $firebaseArray(globalRef.child('users').child(selectedUserUid).child('messages').child(uid));
+                var myMessagesRef = $firebaseArray(globalRef.child('users').child(uid).child('messages').child(selectedUserUid));
+                var theirMessagesRef = $firebaseArray(globalRef.child('users').child(selectedUserUid).child('messages').child(uid));
                 myMessagesRef.$add({message:message, uid:uid});
                 theirMessagesRef.$add({message:message, uid:uid});
 
             },
             createPing: function(uid, selectedUserUid) {
-                theirMessagesRef = $firebaseArray(globalRef.child('users').child(selectedUserUid).child('messages').child(uid));
+                var theirMessagesRef = $firebaseArray(globalRef.child('users').child(selectedUserUid).child('messages').child(uid));
                 theirMessagesRef.$add(uid);
+            },
+            removePing: function(uid, selectedUserUid) {
+                var theirMessagesRef = $firebaseArray(globalRef.child('users').child(selectedUserUid).child('messages').child(uid));
+                globalRef.child('users').child(selectedUserUid).child('messages').child(uid).remove();
             },
             get: function(uid, selectedUserUid) {
                 var getRef = globalRef.child('users').child(uid).child('messages').child(selectedUserUid);

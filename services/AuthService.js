@@ -10,8 +10,6 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
             if (snap.val() === true) {
                 //disable next line to allow users to persist.
                 userRef.onDisconnect().remove();
-            } else {
-                $state.go('home');
             }
         });
     }
