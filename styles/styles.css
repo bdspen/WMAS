@@ -31,14 +31,14 @@
     border-style: inset;
     padding: 3px;
 }
-.bo55 {
+.box {
     -webkit-box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
     -moz-box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
     box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
 }
-.glyphicon.glyphicon-green:before .6
+.glyphicon.glyphicon-green:before{
     content: "\25cf";
-    color: green
+    color: green;
 }
 .user-button {
     display: inline;
