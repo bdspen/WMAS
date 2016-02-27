@@ -34,7 +34,9 @@ app.config(function($stateProvider, $locationProvider, $urlRouterProvider) {
         containerClasses: ["col-md-8", "col-md-4"],
         resolve: {
             resources: function(AuthService, UserService, MessageService, $rootScope) {
-                AuthService.anon();
+                if(!AuthService.authData){
+                    AuthService.anon();        
+                }
                 $rootScope.users = UserService();
                 var resources = {
                     AuthService: AuthService,

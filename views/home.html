@@ -3,7 +3,12 @@
     <div ng-hide="$root.$state.includes('chat') || $root.$state.includes('chatrequest')">
         <h2>Click on any user to start a chat.</h2>
         <div ng-if="newUsers.length > 1">
-            <h4>A new user has joined! click<a ng-click="refresh()"> Here</a> to refresh the map</h4>
+            <h4>New Users have joined, click<a ng-click="refresh()"> Here</a> if you would like to refresh the map.</h4>
+        </div>
+        <div ng-if="newRequests.length > 0">
+            <ul ng-repeat="user in newRequests">
+                <li><h4>A user from {{user.address}} has requested to chat! Click<a ng-click="requestAccept(user)"> Here</a> if you would like to chat back.</h4></li>
+            </ul>
         </div>
         <div class="list-group users">
             <button class="list-group-item" ng-repeat="user in $root.users" ng-if="user.uid != newUsers[1].uid"ng-click="clickMap(user.uid)" ng-hide="user.uid == $root.user.uid">

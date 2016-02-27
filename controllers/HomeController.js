@@ -3,6 +3,7 @@ angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$state', '$roo
 
         var ref = new Firebase(fbUrl);
         var anyNewItems = false;
+        $scope.newRequests = [];
         $scope.newUsers = [];
         $scope.auth = resources.AuthService; //contains user's data from AuthService
         $scope.clickMap = function(userId){
@@ -30,7 +31,7 @@ angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$state', '$roo
         $scope.$watch('auth.authData', function() {
             if($scope.auth.authData){
                 //watch users/messages for new child, if there is a new child, go to the chat state with the new child id as selectedUser
-                var uid = $scope.auth.authData.uid
+                var uid = $scope.auth.authData.uid;
                 ref.child('users').child(uid).child('messages').once('child_added', function(data){
                     if($state.is('home')){
                         $scope.requester = data.val();
@@ -38,13 +39,17 @@ angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$state', '$roo
                         $scope.requester = $scope.requester[properties[0]];
                         for(var i = 0; i < $rootScope.users.length; i++){
                             if($scope.requester == $rootScope.users[i].uid){
-                                $rootScope.selectedUser = $rootScope.users[i];
+                                $scope.newRequests.push($rootScope.users[i]);
                             }
                         }
-                        $state.go('chatrequest', { selectedUid: $scope.requester, uid: uid });
                     }
                 });
             }
         });
+        $scope.requestAccept = function(user){
+            var uid = $scope.auth.authData.uid
+            $rootScope.selectedUser = user;
+            $state.go('chatrequest', { selectedUid: $scope.requester, uid: uid });
+        }
     }
 ]);
