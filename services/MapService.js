@@ -40,7 +40,7 @@ angular.module('MapService', []).factory('MapService', ['geolocation', '$rootSco
         };
         if (!map) {// If no map
             var map = new google.maps.Map(document.getElementById('map'), { // Create a new map
-                zoom:8,
+                zoom:9,
                 center: myLatLng
             });
         }

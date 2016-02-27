@@ -31,12 +31,12 @@
     border-style: inset;
     padding: 3px;
 }
-.users {
+.bo55 {
     -webkit-box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
     -moz-box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
     box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
 }
-.glyphicon.glyphicon-green:before {
+.glyphicon.glyphicon-green:before .6
     content: "\25cf";
     color: green
 }
@@ -58,4 +58,46 @@
 }
 #message-panel{
     height: 700px;
+}
+
+@-webkit-keyframes blink {
+    0% {
+        opacity:1;
+    }
+    50% {
+        opacity:.55;
+    }
+    100% {
+        opacity:1;
+    }
+}
+@-moz-keyframes blink {
+    0% {
+        opacity:1;
+    }
+    50% {
+        opacity:.55;
+    }
+    100% {
+        opacity:1;
+    }
+}
+.blink {
+-webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    -ms-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+
+    -webkit-animation-direction: normal;
+    -webkit-animation-duration: 1.2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-name: blink;
+    -webkit-animation-timing-function: ease-in-out;
+
+-moz-animation-direction: normal;
+    -moz-animation-duration: 1.2s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-name: blink;
+    -moz-animation-timing-function: ease-in-out;
 }
