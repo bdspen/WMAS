@@ -12,7 +12,7 @@
         </div>
         <hr>
         <div class="list-group box">
-            <button class="list-group-item" ng-repeat="user in $root.users" ng-if="user.uid != newUsers[1].uid"ng-click="clickMap(user.uid)" ng-hide="user.uid == $root.user.uid">
+            <button class="list-group-item" ng-repeat="user in $root.users" ng-if="user.uid != newUsers[newUsers.length].uid" ng-click="clickMap(user.uid)" ng-hide="user.$id == $root.user.uid">
                 <div class="user-button">
 
                     <h4><span class="glyphicon glyphicon-green"></span> {{user.address}}</h4>

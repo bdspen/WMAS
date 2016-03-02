@@ -36,7 +36,7 @@
     -moz-box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
     box-shadow: -5px 5px 9px 0px rgba(110, 110, 110, 0.65);
 }
-.glyphicon.glyphicon-green:before {
+.glyphicon.glyphicon-green:before{
     content: "\25cf";
     color: green;
 }
@@ -83,7 +83,7 @@
     }
 }
 .blink {
-    -webkit-transition: all 1s ease-in-out;
+-webkit-transition: all 1s ease-in-out;
     -moz-transition: all 1s ease-in-out;
     -o-transition: all 1s ease-in-out;
     -ms-transition: all 1s ease-in-out;
@@ -95,7 +95,7 @@
     -webkit-animation-name: blink;
     -webkit-animation-timing-function: ease-in-out;
 
-    -moz-animation-direction: normal;
+-moz-animation-direction: normal;
     -moz-animation-duration: 1.2s;
     -moz-animation-iteration-count: infinite;
     -moz-animation-name: blink;
