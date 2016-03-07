@@ -1,7 +1,7 @@
-angular.module("HomeCtrl", []).controller('HomeCtrl', ['$scope', '$state', '$rootScope', 'resources', 'MapService', 'fbUrl', '$timeout',
-    function($scope, $state, $rootScope, resources, MapService, fbUrl, $timeout) {
+angular.module("WM").controller('HomeCtrl', ['$scope', '$state', '$rootScope', 'resources', 'MapService', 'fbUrl', '$timeout', 'FirebaseService',
+    function($scope, $state, $rootScope, resources, MapService, fbUrl, $timeout, FirebaseService) {
 
-        var ref = new Firebase(fbUrl);
+        var ref = FirebaseService;
         var anyNewItems = false;
         $scope.newRequests = [];
         $scope.newUsers = [];

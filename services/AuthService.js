@@ -1,5 +1,5 @@
-angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geolocation', 'UserService', '$rootScope', '$state', 'fbUrl', 'ReverseGeocodeService', function($firebaseAuth, geolocation, UserService, $rootScope, $state, fbUrl, ReverseGeocodeService) {
-    var ref = new Firebase(fbUrl);
+angular.module('WM').factory('AuthService', ['$firebaseAuth', 'geolocation', 'UserService', '$rootScope', '$state', 'fbUrl', 'ReverseGeocodeService', 'FirebaseService', function($firebaseAuth, geolocation, UserService, $rootScope, $state, fbUrl, ReverseGeocodeService, FirebaseService) {
+    var ref = FirebaseService;
     var AuthObj = {};
     var auth = $firebaseAuth(ref);
 
@@ -17,7 +17,7 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
     AuthObj.anon = function() {
         ref.authAnonymously(function(error, authData) {
             if (error) {
-                // console.log("Login Failed!", error);
+                alert("Login Failed!, please refresh");
             } else {
                 // console.log("Authenticated successfully with payload:", authData);
                 AuthObj.saveUser(authData);
@@ -37,7 +37,6 @@ angular.module('AuthService', []).factory('AuthService', ['$firebaseAuth', 'geol
             ReverseGeocodeService.numberOfLocations(AuthObj.coords.lat, AuthObj.coords.long).then(function(address){
                 $rootScope.user.address = address;
                 userRef.set({uid: uid, lat: AuthObj.coords.lat , lng: AuthObj.coords.long, address: address });
-                console.log(address);
             });
         });
         AuthObj.authData = authData;

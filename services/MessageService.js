@@ -1,6 +1,6 @@
-angular.module('MessageService', []).factory('MessageService', ['$firebaseArray', '$rootScope',
-    function($firebaseArray, $rootScope) {
-        var globalRef = new Firebase("https://worldmessage.firebaseio.com");
+angular.module('WM').factory('MessageService', ['$firebaseArray', '$rootScope', 'FirebaseService',
+    function($firebaseArray, $rootScope, FirebaseService) {
+        var globalRef = FirebaseService;
 
         var Message = {
             create: function(message, uid, selectedUserUid) {

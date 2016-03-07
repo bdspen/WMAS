@@ -1,6 +1,6 @@
-angular.module('UserService', []).factory('UserService', ['$firebaseArray', function($firebaseArray) {
+angular.module('WM').factory('UserService', ['$firebaseArray', 'FirebaseService', function($firebaseArray, FirebaseService) {
     return function() {
-        var ref = new Firebase("https://worldmessage.firebaseio.com/users");
+        var ref = FirebaseService;
         return $firebaseArray(ref);
     }
 }]);

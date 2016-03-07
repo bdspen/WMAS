@@ -1,4 +1,4 @@
-angular.module('ReverseGeocodeService', []).factory('ReverseGeocodeService', ['$q', function($q) {
+angular.module('WM').factory('ReverseGeocodeService', ['$q', function($q) {
     return {
         numberOfLocations: function(lat, lng) {
             var geocoder = new google.maps.Geocoder();

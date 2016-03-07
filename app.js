@@ -3,14 +3,6 @@ var app = angular.module("WM", [
     'ui.router',
     'firebase',
     'geolocation',
-    'ReverseGeocodeService',
-    'ngAnimate',
-    'HomeCtrl',
-    'MessageCtrl',
-    'AuthService',
-    'UserService',
-    'MessageService',
-    'MapService',
 ]);
 
 app.constant('fbUrl', "https://worldmessage.firebaseio.com");
@@ -34,7 +26,7 @@ app.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', functio
         templateUrl: 'views/home.html',
         containerClasses: ["col-md-8", "col-md-4"],
         resolve: {
-            resources: function(AuthService, UserService, MessageService, $rootScope) {
+            resources: function(AuthService, UserService, MessageService, $rootScope, FirebaseService) {
                 if(!AuthService.authData){
                     AuthService.anon();
                 }
@@ -52,8 +44,8 @@ app.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', functio
         templateUrl: 'views/home.html',
         containerClasses: ["col-md-5", "col-md-7"],
         resolve: {
-            resources: function(MessageService, $rootScope, $stateParams, $firebaseObject, fbUrl) {
-                var selectedUserRef = new Firebase(fbUrl).child('users').child($stateParams.selectedUid);
+            resources: function(MessageService, $rootScope, $stateParams, $firebaseObject, fbUrl, FirebaseService) {
+                var selectedUserRef = FirebaseService(fbUrl).child('users').child($stateParams.selectedUid);
                 var resources = {
                     uid: $stateParams.uid,
                     selectedUser: {},
@@ -78,9 +70,9 @@ app.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', functio
         templateUrl: 'views/home.html',
         containerClasses: ["col-md-5", "col-md-7"],
         resolve: {
-            resources: function(MessageService, $rootScope, $stateParams, $firebaseObject, fbUrl) {
+            resources: function(MessageService, $rootScope, $stateParams, $firebaseObject, fbUrl, FirebaseService) {
 
-                var selectedUserRef = new Firebase(fbUrl).child('users').child($stateParams.selectedUid);
+                var selectedUserRef = FirebaseService(fbUrl).child('users').child($stateParams.selectedUid);
                 var resources = {
                     uid: $stateParams.uid,
                     selectedUser: {},

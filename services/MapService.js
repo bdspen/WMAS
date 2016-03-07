@@ -1,5 +1,5 @@
-angular.module('MapService', []).factory('MapService', ['geolocation', '$rootScope', '$firebaseObject', '$firebaseArray', 'MessageService', 'UserService', '$state', function(geolocation, $rootScope, $firebaseObject, $firebaseArray, MessageService, UserService, $state) {
-    var ref = new Firebase("https://worldmessage.firebaseio.com");
+angular.module('WM').factory('MapService', ['geolocation', '$rootScope', '$firebaseObject', '$firebaseArray', 'MessageService', 'UserService', '$state', 'FirebaseService', function(geolocation, $rootScope, $firebaseObject, $firebaseArray, MessageService, UserService, $state, FirebaseService) {
+    var ref = FirebaseService;
     var MapObj = {markers:{}};//sets mapobj(the factory obj) with markers, hich will be all user's markers
     var locations = [];//locations will hold all user locations
     var coords = {};//coords will be object that will hold your coordinates

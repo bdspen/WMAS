@@ -1,7 +1,7 @@
-angular.module("MessageCtrl", []).controller('MessageCtrl', ['$scope', '$state', '$rootScope', 'resources', 'fbUrl', '$firebaseArray', '$firebaseObject',
-    function($scope, $state, $rootScope, resources, fbUrl, $firebaseArray, $firebaseObject) {
+angular.module('WM').controller('MessageCtrl', ['$scope', '$state', '$rootScope', 'resources', 'fbUrl', '$firebaseArray', '$firebaseObject', 'FirebaseService',
+    function($scope, $state, $rootScope, resources, fbUrl, $firebaseArray, $firebaseObject, FirebaseService) {
 
-        var ref = new Firebase(fbUrl);
+        var ref = FirebaseService;
         $scope.uid = resources.uid;//your uid resolved from stateParams
         $rootScope.selectedUser = resources.selectedUser;//bind the selected user from resolve to rootscope.
         //messaging related code
