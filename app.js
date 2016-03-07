@@ -15,7 +15,6 @@ app.run(['$state', '$rootScope', function($state, $rootScope) { //allows for sta
     $rootScope.$on('$stateChangeSuccess',function(event, toState, toParams, fromState, fromParams){
         $rootScope.containerClasses = toState.containerClasses;
     });
-    $state.go('home'); //go home on start
     $rootScope.$state = $state;
 }]);
 
@@ -45,7 +44,8 @@ app.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', functio
         containerClasses: ["col-md-5", "col-md-7"],
         resolve: {
             resources: function(MessageService, $rootScope, $stateParams, $firebaseObject, fbUrl, FirebaseService) {
-                var selectedUserRef = FirebaseService(fbUrl).child('users').child($stateParams.selectedUid);
+                var newFb = FirebaseService;
+                var selectedUserRef = FirebaseService.child('users').child($stateParams.selectedUid);
                 var resources = {
                     uid: $stateParams.uid,
                     selectedUser: {},
@@ -71,8 +71,7 @@ app.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', functio
         containerClasses: ["col-md-5", "col-md-7"],
         resolve: {
             resources: function(MessageService, $rootScope, $stateParams, $firebaseObject, fbUrl, FirebaseService) {
-
-                var selectedUserRef = FirebaseService(fbUrl).child('users').child($stateParams.selectedUid);
+                var selectedUserRef = FirebaseService.child('users').child($stateParams.selectedUid);
                 var resources = {
                     uid: $stateParams.uid,
                     selectedUser: {},

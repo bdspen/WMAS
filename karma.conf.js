@@ -32,7 +32,7 @@ module.exports = function(config) {
             'services/MessageService.js',
             'services/MapService.js',
             'services/FirebaseService.js',
-            'tests/angular-mocks.js',
+            'node_modules/angular-mocks/angular-mocks.js',
             '/tests/*.js',
             '/tests/*.test.js',
             'tests/*.test.js',

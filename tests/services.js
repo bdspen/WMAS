@@ -32,24 +32,31 @@ describe('Services', function() {
     describe('function', function(){
         it('returns an authObject', function(){
             expect(typeof AuthService).toBe('object');
+            expect(typeof AuthService.anon).toBe('function');
+            expect(typeof AuthService.saveUser).toBe('function');
         });
     });
 // MAPS
     describe('function', function(){
         it('returns a MapObj', function(){
-            // console.log(MapService);
             expect(typeof MapService).toBe('object');
+            expect(typeof MapService.refresh).toBe('function');
+            expect(typeof MapService.initialize).toBe('function');
+            expect(typeof MapService.convertToMapPoints).toBe('function');
+            expect(typeof MapService.markers).toBe('object');
         });
     });
+//MESSAGE
     describe('function', function(){
         it('returns a MessageObj', function(){
-            // console.log(MessageService);
             expect(typeof MessageService).toBe('object');
+            expect(typeof MessageService.create).toBe('function');
+            expect(typeof MessageService.createPing).toBe('function');
+            expect(typeof MessageService.removePing).toBe('function');
+            expect(typeof MessageService.get).toBe('function');
+            expect(typeof MessageService.delete).toBe('function');
+
         });
-        // it('returns a Message from user one to user two', function(){
-        //     MessageService.create("Hello");
-        //     expect().toBe('object');
-        // });
     });
 
 });
