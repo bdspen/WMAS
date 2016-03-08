@@ -23,7 +23,7 @@ app.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', functio
         url: '/',
         controller: 'HomeCtrl',
         templateUrl: 'views/home.html',
-        containerClasses: ["col-md-8", "col-md-4"],
+        containerClasses: {map:"col-sm-8", chat:"col-sm-4"},
         resolve: {
             resources: function(AuthService, UserService, MessageService, $rootScope, FirebaseService) {
                 if(!AuthService.authData){
@@ -41,7 +41,7 @@ app.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', functio
         url: '/chat/:selectedUid/:uid',
         controller: 'MessageCtrl',
         templateUrl: 'views/home.html',
-        containerClasses: ["col-md-5", "col-md-7"],
+        containerClasses: {map:"col-md-5", chat:"col-md-7"},
         resolve: {
             resources: function(MessageService, $rootScope, $stateParams, $firebaseObject, fbUrl, FirebaseService) {
                 var newFb = FirebaseService;
@@ -68,7 +68,7 @@ app.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', functio
         url: '/chatrequest/:selectedUid/:uid',
         controller: 'MessageCtrl',
         templateUrl: 'views/home.html',
-        containerClasses: ["col-md-5", "col-md-7"],
+        containerClasses: {map:"col-md-5", chat:"col-md-7"},
         resolve: {
             resources: function(MessageService, $rootScope, $stateParams, $firebaseObject, fbUrl, FirebaseService) {
                 var selectedUserRef = FirebaseService.child('users').child($stateParams.selectedUid);
