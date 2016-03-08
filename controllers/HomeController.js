@@ -3,7 +3,7 @@ angular.module("WM").controller('HomeCtrl', ['$scope', '$state', '$rootScope', '
 
         var ref = FirebaseService;
         var anyNewItems = false;
-        $scope.newRequests = [];
+        $rootScope.newRequests = [];
         $scope.newUsers = [];
         $scope.auth = resources.AuthService; //contains user's data from AuthService
         $scope.clickMap = function(userId){
@@ -34,12 +34,13 @@ angular.module("WM").controller('HomeCtrl', ['$scope', '$state', '$rootScope', '
                 var uid = $scope.auth.authData.uid;
                 ref.child('users').child(uid).child('messages').on('child_added', function(data){
                     if($state.is('home')){
+                        $scope.$parent.containerClasses = {map:"col-sm-5", chat:"col-sm-4", requests:"col-sm-3"};
                         $scope.requester = data.val();
                         var properties = Object.getOwnPropertyNames($scope.requester);
                         $scope.requester = $scope.requester[properties[0]];
                         for(var i = 0; i < $rootScope.users.length; i++){
                             if($scope.requester == $rootScope.users[i].uid){
-                                $scope.newRequests.push($rootScope.users[i]);
+                                $rootScope.newRequests.push($rootScope.users[i]);
                             }
                         }
                     }

@@ -30,22 +30,25 @@
 
 <body ng-app="WM" ng-strict-di>
     <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a ui-sref="home" class="navbar-brand">WorldMessage</a>
-            </div>
+        <div class="navbar-header">
+            <a ui-sref="home" class="navbar-brand">WorldMessage</a>
         </div>
+        <a class="pull-right navbar-brand" href="https://github.com/bdspen/WMAS">Project Page</a>
     </nav>
     <div class="container-fluid">
-        <div class="row">
-            <div id="map-div" ng-class="containerClasses[0]">
+        <div class="row" id="chat">
+            <div id="map-div" ng-class="containerClasses.map">
                 <div id="map"></div>
             </div>
-            <div id="chat-div" ng-class="containerClasses[1]" ui-view></div>
+            <div id="chat-div" ng-class="containerClasses.chat" class="sidebar" ui-view></div>
+            <div ng-if="$root.newRequests.length > 0" >
+                <div ng-class="containerClasses.requests" class="sidebar">
+                    <div ng-repeat="user in $root.newRequests" ng-click="requestAccept(user)" class="blink list-group box">
+                        <div class="list-group-item"><h4>A user from {{user.address}} has requested to chat! Click if you would like to chat back.</h4></div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="navbar navbar-fixed-bottom">
-        <a class="pull-right navbar-brand" href="https://github.com/bdspen/WMAS">Project Page</a>
     </div>
 </body>
 
