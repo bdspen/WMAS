@@ -16,6 +16,7 @@ app.run(['$state', '$rootScope', function($state, $rootScope) { //allows for sta
         $rootScope.containerClasses = toState.containerClasses;
     });
     $rootScope.$state = $state;
+    $state.go('home');
 }]);
 
 app.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', function($stateProvider, $locationProvider, $urlRouterProvider) {
