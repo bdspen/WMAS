@@ -23,7 +23,7 @@ gulp.task('test', function () {
 });
 
 gulp.task('deploy', function() {
-  return gulp.src('*')
+  return gulp.src('./**/*')
     .pipe(ghPages());
 });
 
