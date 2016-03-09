@@ -1,0 +1,126 @@
+* {
+    border-radius: 3px !important;
+}
+.container-fluid{
+    padding-bottom: 15px;
+}
+#chat{
+    background-color: white;
+}
+#map {
+    display: block;
+    height: 900px;
+    overflow: hidden;
+    -webkit-transition: all linear 1s;
+    transition: all linear 1s;
+}
+.short{
+    height: 50%;
+}
+
+.navbar {
+    -webkit-box-shadow: -5px 5px 9px 0px rgba(135, 135, 135, 0.65);
+    -moz-box-shadow: -5px 5px 9px 0px rgba(135, 135, 135, 0.65);
+    box-shadow: -5px 5px 9px 0px rgba(135, 135, 135, 0.65);
+    background-color: #ffffff;
+    border-radius: 0px;
+}
+#map {
+    -webkit-box-shadow: -5px 5px 9px 0px rgba(135, 135, 135, 0.65);
+    -moz-box-shadow: -5px 5px 9px 0px rgba(135, 135, 135, 0.65);
+    box-shadow: -5px 5px 9px 0px rgba(135, 135, 135, 0.65);
+}
+#messages {
+    height:500px;
+    max-height: 500px;
+    overflow: auto;
+    background-color: white;
+    border: 2px solid;
+    border-style: inset;
+    padding: 3px;
+}
+.box {
+    -webkit-box-shadow: -5px 5px 9px 0px rgba(135, 135, 135, 0.65);
+    -moz-box-shadow: -5px 5px 9px 0px rgba(135, 135, 135, 0.65);
+    box-shadow: -5px 5px 9px 0px rgba(135, 135, 135, 0.65);
+}
+.glyphicon.glyphicon-green:before{
+    content: "\25cf";
+    color: green;
+}
+.user-button {
+    display: inline;
+    font-weight: bold;
+}
+.message-img-text {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+.panel > .panel-heading {
+    background-image: none;
+    -webkit-box-shadow: -5px 5px 9px 0px rgba(135, 135, 135, 0.65);
+    -moz-box-shadow: -5px 5px 9px 0px rgba(135, 135, 135, 0.65);
+    box-shadow: -5px 5px 9px 0px rgba(135, 135, 135, 0.65);
+
+}
+#message-panel{
+    height: 700px;
+}
+
+@-webkit-keyframes blink {
+    0% {
+        opacity:1;
+    }
+    50% {
+        opacity:.55;
+    }
+    100% {
+        opacity:1;
+    }
+}
+@-moz-keyframes blink {
+    0% {
+        opacity:1;
+    }
+    50% {
+        opacity:.55;
+    }
+    100% {
+        opacity:1;
+    }
+}
+.blink {
+-webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    -ms-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+
+    -webkit-animation-direction: normal;
+    -webkit-animation-duration: 1.2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-name: blink;
+    -webkit-animation-timing-function: ease-in-out;
+
+-moz-animation-direction: normal;
+    -moz-animation-duration: 1.2s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-name: blink;
+    -moz-animation-timing-function: ease-in-out;
+}
+
+.sidebar{
+    height: 100%;
+    -webkit-box-shadow: -5px 5px 9px 0px rgba(135, 135, 135, 0.65);
+    -moz-box-shadow: -5px 5px 9px 0px rgba(135, 135, 135, 0.65);
+    box-shadow: -5px 5px 9px 0px rgba(135, 135, 135, 0.65);
+}
+.row{
+    overflow: hidden;
+}
+
+[class*="col-"]{
+height: 900px;
+margin-bottom: 15px;
+}
