@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
     connect = require('gulp-connect'),
-    karma = require('gulp-karma');
+    karma = require('gulp-karma'),
+    ghPages = require('gulp-gh-pages');
 
 gulp.task('webserver', function() {
   connect.server({
@@ -19,6 +20,11 @@ gulp.task('test', function () {
       configFile: 'karma.conf.js',
       action: 'run'
     }));
+});
+
+gulp.task('deploy', function() {
+  return gulp.src('./*')
+    .pipe(ghPages());
 });
 
 gulp.task('default', ['webserver', 'watch']);
