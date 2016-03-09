@@ -1,6 +1,1 @@
-/node_modules
-/tests/
-/karma.conf.js
 /users.json
-/webpack.config.js
-/gulpfile.js

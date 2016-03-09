@@ -14,12 +14,8 @@
     -webkit-transition: all linear 1s;
     transition: all linear 1s;
 }
-#map-short{
-    display: block;
-    height: 450px;
-    overflow: hidden;
-    -webkit-transition: all linear 1s;
-    transition: all linear 1s;
+.short{
+    height: 50%;
 }
 
 .navbar {

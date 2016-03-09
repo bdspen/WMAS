@@ -34,7 +34,7 @@ angular.module("WM").controller('HomeCtrl', ['$scope', '$state', '$rootScope', '
                 var uid = $scope.auth.authData.uid;
                 ref.child('users').child(uid).child('messages').on('child_added', function(data){
                     if($state.is('home')){
-                        $scope.$parent.containerClasses = {map:"col-sm-5", chat:"col-sm-4", requests:"col-sm-3"};
+                        // $scope.$parent.containerClasses = {map:"col-sm-7", chat:"col-sm-5"};
                         $scope.requester = data.val();
                         var properties = Object.getOwnPropertyNames($scope.requester);
                         $scope.requester = $scope.requester[properties[0]];
