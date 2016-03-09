@@ -22,9 +22,9 @@ gulp.task('test', function () {
     }));
 });
 
-gulp.task('deploy', function() {
-  return gulp.src('./**/*')
-    .pipe(ghPages());
-});
+// gulp.task('deploy', function() {
+//   return gulp.src('./**/*')
+//     .pipe(ghPages());
+// });
 
 gulp.task('default', ['webserver', 'watch']);
